@@ -1,0 +1,14 @@
+{
+    "name": "ezsystems/comments-bundle",
+    "description": "Commenting system for eZ Publish",
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "Jerome Vieilledent",
+            "email": "jv@ez.no"
+        }
+    ],
+    "require": {
+        "knplabs/knp-disqus-bundle": "~2.0"
+    }
+}
