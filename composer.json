@@ -9,7 +9,8 @@
         }
     ],
     "require": {
-        "knplabs/knp-disqus-bundle": "dev-master"
+        "symfony/http-foundation": "~2.2",
+        "ezsystems/ezpublish-kernel": "~5.1"
     },
     "autoload": {
         "psr-0": {"EzSystems\\CommentsBundle": ""}
