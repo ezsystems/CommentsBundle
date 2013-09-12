@@ -1,7 +1,6 @@
 parameters:
-#    ez_systems_comments.example.class: EzSystems\CommentsBundle\Example
+    ez_comments.renderer.class: EzSystems\CommentsBundle\Comments\CommentsRenderer
 
 services:
-#    ez_systems_comments.example:
-#        class: %ez_systems_comments.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    ez_comments.renderer:
+        class: %ez_comments.renderer.class%
