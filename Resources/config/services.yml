@@ -1,6 +1,15 @@
 parameters:
     ez_comments.renderer.class: EzSystems\CommentsBundle\Comments\CommentsRenderer
+    ez_comments.twig.extension.class: EzSystems\CommentsBundle\Twig\Extension\CommentsExtension
 
 services:
     ez_comments.renderer:
         class: %ez_comments.renderer.class%
+
+    ez_comments.twig.extension:
+        class: %ez_comments.twig.extension.class%
+        arguments: [@ez_comments.renderer]
+        calls:
+            - [setRequest, ['@?request=']]
+        tags:
+            - { name: twig.extension }
