@@ -5,7 +5,8 @@ parameters:
     ez_comments.default.disqus.default_template: "EzSystemsCommentsBundle::disqus.html.twig"
 
     # Facebook
-    ez_comments_default.facebook.default_template: "EzSystemsCommentsBundle::facebook.html.twig"
-    ez_comments_default.facebook.width: 470
-    ez_comments_default.facebook.num_posts: 10
-    ez_comments_default.facebook.color_scheme: light
+    ez_comments.default.facebook.default_template: "EzSystemsCommentsBundle::facebook.html.twig"
+    ez_comments.default.facebook.width: 470
+    ez_comments.default.facebook.num_posts: 10
+    ez_comments.default.facebook.color_scheme: light
+    ez_comments.default.facebook.include_sdk: true
