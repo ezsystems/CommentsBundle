@@ -57,12 +57,10 @@ class Disqus extends TemplateBasedProvider
      */
     public function renderForContent( ContentInfo $contentInfo, Request $request, array $options = array() )
     {
-        $siteAccessName = $request->attributes->has( 'siteaccess' ) ? $request->attributes->get( 'siteaccess' )->name : 'default';
-
         return $this->doRender(
             $options + array(
                 'shortname' => $this->shortName,
-                'identifier' => "$siteAccessName/$contentInfo->id",
+                'identifier' => $contentInfo->id,
                 // TODO: Use translated name
                 'title' => $contentInfo->name,
             )

@@ -71,10 +71,9 @@ class DisqusTest extends TemplateBasedProviderTest
      */
     protected function getExpectedOptionsForContent( ContentInfo $contentInfo, Request $request )
     {
-        $siteAccessName = $request->attributes->has( 'siteaccess' ) ? $request->attributes->get( 'siteaccess' )->name : 'default';
         return array(
             'shortname' => static::SHORTNAME,
-            'identifier' => "$siteAccessName/$contentInfo->id",
+            'identifier' => $contentInfo->id,
             'title' => $contentInfo->name
         );
     }
