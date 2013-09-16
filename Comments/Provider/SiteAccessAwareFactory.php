@@ -9,7 +9,9 @@
 
 namespace EzSystems\CommentsBundle\Comments\Provider;
 
+use eZ\Publish\API\Repository\LocationService;
 use eZ\Publish\Core\MVC\ConfigResolverInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Templating\EngineInterface;
 
 class SiteAccessAwareFactory
@@ -46,5 +48,30 @@ class SiteAccessAwareFactory
         $disqusProvider->setShortName( $this->configResolver->getParameter( 'disqus.shortname', 'ez_comments' ) );
 
         return $disqusProvider;
+    }
+
+    /**
+     * @param LocationService $locationService
+     * @param RouterInterface $router
+     *
+     * @return \EzSystems\CommentsBundle\Comments\ProviderInterface
+     */
+    public function buildFacebook( LocationService $locationService, RouterInterface $router )
+    {
+        $facebookProvider = new Facebook(
+            $this->configResolver->getParameter( 'facebook.app_id', 'ez_comments' ),
+            array(
+                'width' => $this->configResolver->getParameter( 'facebook.width', 'ez_comments' ),
+                'num_posts' => $this->configResolver->getParameter( 'facebook.num_posts', 'ez_comments' ),
+                'color_scheme' => $this->configResolver->getParameter( 'facebook.color_scheme', 'ez_comments' ),
+                'include_sdk' => $this->configResolver->getParameter( 'facebook.include_sdk', 'ez_comments' ),
+            ),
+            $locationService,
+            $router,
+            $this->templateEngine,
+            $this->configResolver->getParameter( 'facebook.default_template', 'ez_comments' )
+        );
+
+        return $facebookProvider;
     }
 }
