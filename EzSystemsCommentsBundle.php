@@ -9,8 +9,15 @@
 
 namespace EzSystems\CommentsBundle;
 
+use EzSystems\CommentsBundle\DependencyInjection\Compiler\ProviderPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class EzSystemsCommentsBundle extends Bundle
 {
+    public function build( ContainerBuilder $container )
+    {
+        $container->addCompilerPass( new ProviderPass() );
+        parent::build( $container );
+    }
 }
