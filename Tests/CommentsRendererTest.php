@@ -66,7 +66,9 @@ class CommentsRendererTest extends PHPUnit_Framework_TestCase
         $renderer = new CommentsRenderer;
         $this->assertEmpty( $renderer->getAllProviders() );
         $provider = $this->getMock( 'EzSystems\\CommentsBundle\\Comments\\ProviderInterface' );
+        $this->assertFalse( $renderer->hasProvider( 'foo' ) );
         $renderer->addProvider( $provider, 'foo' );
+        $this->assertTrue( $renderer->hasProvider( 'foo' ) );
         $this->assertSame( $provider, $renderer->getProvider( 'foo' ) );
     }
 

@@ -84,6 +84,16 @@ class CommentsRenderer implements ProviderInterface
     }
 
     /**
+     * @param string $label
+     *
+     * @return bool
+     */
+    public function hasProvider( $label )
+    {
+        return isset( $this->providers[$label] );
+    }
+
+    /**
      * Retrieves a comments provider by its label
      *
      * @param $label
@@ -96,7 +106,7 @@ class CommentsRenderer implements ProviderInterface
     {
         if ( !isset( $this->providers[$label] ) )
         {
-            throw new InvalidArgumentException( "Unknow comments provider '$label'" );
+            throw new InvalidArgumentException( "Unknown comments provider '$label'" );
         }
 
         return $this->providers[$label];
