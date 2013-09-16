@@ -3,11 +3,12 @@ parameters:
     ez_comments.twig.extension.class: EzSystems\CommentsBundle\Twig\Extension\CommentsExtension
     ez_comments.provider.template_based.class: EzSystems\CommentsBundle\Comments\Provider\TemplateBasedProvider
     ez_comments.provider.disqus.class: EzSystems\CommentsBundle\Comments\Provider\Disqus
-    ez_comments.default.disqus.default_template: "EzSystemsCommentsBundle::disqus.html.twig"
 
 services:
     ez_comments.renderer:
         class: %ez_comments.renderer.class%
+        calls:
+            - [setDefaultProviderLabel, [%ez_comments.default.default_provider%]]
 
     ez_comments.twig.extension:
         class: %ez_comments.twig.extension.class%
