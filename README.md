@@ -1,6 +1,7 @@
 # CommentsBundle
 
 [![Build Status](https://secure.travis-ci.org/ezsystems/CommentsBundle.png?branch=master)](http://travis-ci.org/ezsystems/CommentsBundle)
+
 CommentsBundle is an versatile extension for eZ Publish 5+ making commenting easy.
 
 ## Features
