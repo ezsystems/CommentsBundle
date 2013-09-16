@@ -11,6 +11,7 @@ namespace EzSystems\CommentsBundle;
 
 use EzSystems\CommentsBundle\DependencyInjection\Compiler\ProviderPass;
 use EzSystems\CommentsBundle\DependencyInjection\Configuration\Parser\Common;
+use EzSystems\CommentsBundle\DependencyInjection\Configuration\Parser\Facebook;
 use EzSystems\CommentsBundle\DependencyInjection\EzSystemsCommentsExtension;
 use EzSystems\CommentsBundle\DependencyInjection\Configuration\Parser\Disqus as DisqusConfigParser;
 use Symfony\Component\DependencyInjection\Container;
@@ -31,6 +32,7 @@ class EzSystemsCommentsBundle extends Bundle
             array(
                 new DisqusConfigParser(),
                 new Common(),
+                new Facebook()
             )
         );
     }
