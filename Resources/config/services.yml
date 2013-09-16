@@ -2,6 +2,7 @@ parameters:
     ez_comments.renderer.class: EzSystems\CommentsBundle\Comments\CommentsRenderer
     ez_comments.twig.extension.class: EzSystems\CommentsBundle\Twig\Extension\CommentsExtension
     ez_comments.provider.factory.class: EzSystems\CommentsBundle\Comments\Provider\SiteAccessAwareFactory
+    ez_comments.provider.null.class: EzSystems\CommentsBundle\Comments\Provider\Null
     ez_comments.provider.disqus.class: EzSystems\CommentsBundle\Comments\Provider\Disqus
 
 services:
@@ -21,6 +22,11 @@ services:
     ez_comments.provider.factory:
         class: %ez_comments.provider.factory.class%
         arguments: [@ezpublish.config.resolver, @templating]
+
+    ez_comments.provider.null:
+        class: %ez_comments.provider.null.class%
+        tags:
+            - { name: ez_comments.provider, alias: no_comments }
 
     ez_comments.provider.disqus:
         class: %ez_comments.provider.disqus.class%
