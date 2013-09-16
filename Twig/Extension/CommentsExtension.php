@@ -49,12 +49,12 @@ class CommentsExtension extends Twig_Extension
             new Twig_SimpleFunction(
                 'ez_comments_render',
                 array( $this, 'render' ),
-                array( 'is_safe' => 'html' )
+                array( 'is_safe' => array( 'html' ) )
             ),
             new Twig_SimpleFunction(
                 'ez_comments_render_content',
                 array( $this, 'renderForContent' ),
-                array( 'is_safe' => 'html' )
+                array( 'is_safe' => array( 'html' ) )
             )
         );
     }
