@@ -1,7 +1,7 @@
 parameters:
     ez_comments.renderer.class: EzSystems\CommentsBundle\Comments\CommentsRenderer
     ez_comments.twig.extension.class: EzSystems\CommentsBundle\Twig\Extension\CommentsExtension
-    ez_comments.provider.template_based.class: EzSystems\CommentsBundle\Comments\Provider\TemplateBasedProvider
+    ez_comments.provider.factory.class: EzSystems\CommentsBundle\Comments\Provider\SiteAccessAwareFactory
     ez_comments.provider.disqus.class: EzSystems\CommentsBundle\Comments\Provider\Disqus
 
 services:
@@ -18,16 +18,14 @@ services:
         tags:
             - { name: twig.extension }
 
-    ez_comments.provider.template_based:
-        abstract: true
-        class: %ez_comments.provider.template_based.class%
-        arguments: [@templating]
+    ez_comments.provider.factory:
+        class: %ez_comments.provider.factory.class%
+        arguments: [@ezpublish.config.resolver, @templating]
 
     ez_comments.provider.disqus:
         class: %ez_comments.provider.disqus.class%
-        parent: ez_comments.provider.template_based
-        calls:
-            - [setDefaultTemplate, [%ez_comments.default.disqus.default_template%]]
-            - [setShortName, [%ez_comments.default.disqus.shortname%]]
+        factory_service: ez_comments.provider.factory
+        factory_method: buildDisqus
+        arguments: [%ez_comments.provider.disqus.class%]
         tags:
             - { name: ez_comments.provider, alias: disqus }

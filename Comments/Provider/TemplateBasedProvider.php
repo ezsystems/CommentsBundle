@@ -29,7 +29,7 @@ abstract class TemplateBasedProvider implements ProviderInterface
      */
     private $templateEngine;
 
-    public function __construct( EngineInterface $templateEngine, $defaultTemplate = null )
+    public function __construct( EngineInterface $templateEngine = null, $defaultTemplate = null )
     {
         $this->templateEngine = $templateEngine;
         $this->defaultTemplate = $defaultTemplate;
@@ -52,6 +52,14 @@ abstract class TemplateBasedProvider implements ProviderInterface
     public function getDefaultTemplate()
     {
         return $this->defaultTemplate;
+    }
+
+    /**
+     * @param EngineInterface $templateEngine
+     */
+    public function setTemplateEngine( EngineInterface $templateEngine )
+    {
+        $this->templateEngine = $templateEngine;
     }
 
     /**
