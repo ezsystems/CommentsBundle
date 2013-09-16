@@ -1,6 +1,7 @@
 parameters:
     ez_comments.renderer.class: EzSystems\CommentsBundle\Comments\CommentsRenderer
     ez_comments.twig.extension.class: EzSystems\CommentsBundle\Twig\Extension\CommentsExtension
+    ez_comments.provider.template_based.class: EzSystems\CommentsBundle\Comments\Provider\TemplateBasedProvider
     ez_comments.provider.disqus.class: EzSystems\CommentsBundle\Comments\Provider\Disqus
     ez_comments.default.disqus.default_template: "EzSystemsCommentsBundle::disqus.html.twig"
 
@@ -16,8 +17,15 @@ services:
         tags:
             - { name: twig.extension }
 
+    ez_comments.provider.template_based:
+        abstract: true
+        class: %ez_comments.provider.template_based.class%
+        arguments: [@templating, %ez_comments.default.disqus.default_template%]
+
     ez_comments.provider.disqus:
         class: %ez_comments.provider.disqus.class%
-        arguments: [@templating, %ez_comments.default.disqus.default_template%]
+        parent: ez_comments.provider.template_based
+        calls:
+            - [setShortName, [%ez_comments.default.disqus.default_template%]]
         tags:
             - { name: ez_comments.provider, alias: disqus }

@@ -10,11 +10,9 @@
 namespace EzSystems\CommentsBundle\Comments\Provider;
 
 use eZ\Publish\API\Repository\Values\Content\ContentInfo;
-use EzSystems\CommentsBundle\Comments\ProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Templating\EngineInterface;
 
-class Disqus implements ProviderInterface
+class Disqus extends TemplateBasedProvider
 {
     /**
      * Disqus forum's shortname.
@@ -23,37 +21,9 @@ class Disqus implements ProviderInterface
      */
     protected $shortName;
 
-    /**
-     * Template to use by default to render Disqus thread.
-     *
-     * @var string
-     */
-    private $defaultTemplate;
-
-    /**
-     * @var \Symfony\Component\Templating\EngineInterface
-     */
-    private $templateEngine;
-
-    public function __construct( EngineInterface $templateEngine, $defaultTemplate )
-    {
-        $this->templateEngine = $templateEngine;
-        $this->defaultTemplate = $defaultTemplate;
-    }
-
     public function setShortName( $shortName )
     {
         $this->shortName = $shortName;
-    }
-
-    public function getDefaultTemplate()
-    {
-        return $this->defaultTemplate;
-    }
-
-    protected function getTemplateEngine()
-    {
-        return $this->templateEngine;
     }
 
     /**
@@ -69,7 +39,8 @@ class Disqus implements ProviderInterface
     {
         return $this->doRender(
             $options + array(
-                'identifier' => $request->getPathInfo()
+                'shortname' => $this->shortName,
+                'identifier' => $request->getPathInfo(),
             )
         );
     }
@@ -90,25 +61,11 @@ class Disqus implements ProviderInterface
 
         return $this->doRender(
             $options + array(
-                'identifier' => $siteAccessName . '/' . $contentInfo->id,
+                'shortname' => $this->shortName,
+                'identifier' => "$siteAccessName/$contentInfo->id",
                 // TODO: Use translated name
                 'title' => $contentInfo->name,
             )
         );
-    }
-
-    /**
-     * Renders the template with provided options.
-     * "template" option allows to override the default template for rendering.
-     *
-     * @param array $options
-     * @return string
-     */
-    protected function doRender( array $options )
-    {
-        $template = isset( $options['template'] ) ? $options['template'] : $this->getDefaultTemplate();
-        unset( $options['template'] );
-
-        return $this->getTemplateEngine()->render( $template, $options );
     }
 }
