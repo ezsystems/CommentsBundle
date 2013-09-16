@@ -20,12 +20,13 @@ services:
     ez_comments.provider.template_based:
         abstract: true
         class: %ez_comments.provider.template_based.class%
-        arguments: [@templating, %ez_comments.default.disqus.default_template%]
+        arguments: [@templating]
 
     ez_comments.provider.disqus:
         class: %ez_comments.provider.disqus.class%
         parent: ez_comments.provider.template_based
         calls:
-            - [setShortName, [%ez_comments.default.disqus.default_template%]]
+            - [setDefaultTemplate, [%ez_comments.default.disqus.default_template%]]
+            - [setShortName, [%ez_comments.default.disqus.shortname%]]
         tags:
             - { name: ez_comments.provider, alias: disqus }
