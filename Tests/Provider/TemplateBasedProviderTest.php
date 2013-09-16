@@ -139,7 +139,7 @@ abstract class TemplateBasedProviderTest extends PHPUnit_Framework_TestCase
 
     /**
      * Returns the hash of options that is expected to be injected by the provider into the comments template,
-     * givent the ContentInfo and Request object.
+     * given the ContentInfo and Request object.
      *
      * @param \eZ\Publish\API\Repository\Values\Content\ContentInfo $contentInfo
      * @param \Symfony\Component\HttpFoundation\Request $request
