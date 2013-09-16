@@ -1,5 +1,5 @@
 parameters:
-    ez_comments.renderer.class: EzSystems\CommentsBundle\Comments\CommentsRenderer
+    ez_comments.renderer.lazy.class: EzSystems\CommentsBundle\Comments\LazyCommentsRenderer
     ez_comments.twig.extension.class: EzSystems\CommentsBundle\Twig\Extension\CommentsExtension
     ez_comments.provider.factory.class: EzSystems\CommentsBundle\Comments\Provider\SiteAccessAwareFactory
     ez_comments.provider.null.class: EzSystems\CommentsBundle\Comments\Provider\Null
@@ -7,9 +7,10 @@ parameters:
 
 services:
     ez_comments.renderer:
-        class: %ez_comments.renderer.class%
+        class: %ez_comments.renderer.lazy.class%
         calls:
             - [setDefaultProviderLabel, [%ez_comments.default.default_provider%]]
+            - [setContainer, [@service_container]]
 
     ez_comments.twig.extension:
         class: %ez_comments.twig.extension.class%

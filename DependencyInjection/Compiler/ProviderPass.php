@@ -38,8 +38,8 @@ class ProviderPass implements CompilerPassInterface
                     throw new LogicException( 'ez_comments.renderer service tag needs an "alias" attribute to identify the comments provider. None given' );
 
                 $commentsRendererDef->addMethodCall(
-                    'addProvider',
-                    array ( new Reference( $id ), $attribute['alias'] )
+                    'addLazyProvider',
+                    array ( $id, $attribute['alias'] )
                 );
             }
         }
