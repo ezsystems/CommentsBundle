@@ -10,6 +10,10 @@
 namespace EzSystems\CommentsBundle;
 
 use EzSystems\CommentsBundle\DependencyInjection\Compiler\ProviderPass;
+use EzSystems\CommentsBundle\DependencyInjection\Configuration\Parser\Common;
+use EzSystems\CommentsBundle\DependencyInjection\EzSystemsCommentsExtension;
+use EzSystems\CommentsBundle\DependencyInjection\Configuration\Parser\Disqus as DisqusConfigParser;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -19,5 +23,15 @@ class EzSystemsCommentsBundle extends Bundle
     {
         $container->addCompilerPass( new ProviderPass() );
         parent::build( $container );
+    }
+
+    public function getContainerExtension()
+    {
+        return new EzSystemsCommentsExtension(
+            array(
+                new DisqusConfigParser(),
+                new Common(),
+            )
+        );
     }
 }

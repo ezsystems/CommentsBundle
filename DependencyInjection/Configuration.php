@@ -2,6 +2,7 @@
 
 namespace EzSystems\CommentsBundle\DependencyInjection;
 
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -13,17 +14,43 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 class Configuration implements ConfigurationInterface
 {
     /**
+     * @var \EzSystems\CommentsBundle\DependencyInjection\Configuration\Parser[]
+     */
+    private $configParsers;
+
+    public function __construct( array $configParsers )
+    {
+        $this->configParsers = $configParsers;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('ez_systems_comments');
+        $rootNode = $treeBuilder->root( 'ez_comments' );
 
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
+        $this->addSystemSection( $rootNode );
 
         return $treeBuilder;
+    }
+
+    private function addSystemSection( ArrayNodeDefinition $rootNode )
+    {
+        $systemNodeBuilder = $rootNode
+            ->children()
+                ->arrayNode( 'system' )
+                    ->info( 'System configuration. First key is always a siteaccess or siteaccess group name' )
+                    ->useAttributeAsKey( 'siteaccess_name' )
+                    ->normalizeKeys( false )
+                    ->prototype( 'array' )
+                        ->children();
+
+        // Delegate to configuration parsers
+        foreach ( $this->configParsers as $parser )
+        {
+            $parser->addSemanticConfig( $systemNodeBuilder );
+        }
     }
 }
