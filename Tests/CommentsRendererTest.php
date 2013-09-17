@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CommentsRendererTest extends PHPUnit_Framework_TestCase
 {
-    public function testContruct()
+    public function testConstruct()
     {
         $providers = array(
             'foo' => $this->getMock( 'EzSystems\\CommentsBundle\\Comments\\ProviderInterface' ),
