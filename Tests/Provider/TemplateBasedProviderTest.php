@@ -126,8 +126,9 @@ abstract class TemplateBasedProviderTest extends PHPUnit_Framework_TestCase
         $options1 = $this->getExpectedOptions( $request1 );
         $customOptions1 = array( 'category' => "123456789" );
 
-        $request2 = Request::create( '/some/thing', 'GET', array( 'foo' => 'bar' ) );
+        $request2 = Request::create( '/mySiteAccess/some/thing', 'GET', array( 'foo' => 'bar' ) );
         $request2->attributes->set( 'siteaccess', new SiteAccess( 'mySiteAccess', 'uri' ) );
+        $request2->attributes->set( 'semanticPathinfo', '/some/thing' );
         $options2 = $this->getExpectedOptions( $request2 );
         $customOptions2 = array( 'category' => "123456789", 'lonely_var' => "I'm a poooooor lonesome cow-boy!" );
 
@@ -206,7 +207,7 @@ abstract class TemplateBasedProviderTest extends PHPUnit_Framework_TestCase
     {
         $ret = array();
 
-        $contentInfo1 = new ContentInfo( array( 'id' => 123, 'name' => 'A developer walks into a bar' ) );
+        $contentInfo1 = new ContentInfo( array( 'id' => 123, 'mainLocationId' => 456, 'name' => 'A developer walks into a bar' ) );
         $request1 = Request::create( '/foo/bar' );
         $ret[] = array(
             $contentInfo1,
@@ -214,7 +215,7 @@ abstract class TemplateBasedProviderTest extends PHPUnit_Framework_TestCase
             $this->getExpectedOptionsForContent( $contentInfo1, $request1 )
         );
 
-        $contentInfo2 = new ContentInfo( array( 'id' => 456, 'name' => 'Again a fake content' ) );
+        $contentInfo2 = new ContentInfo( array( 'id' => 456, 'mainLocationId' => 789, 'name' => 'Again a fake content' ) );
         $request2 = Request::create( '/test/fake-content' );
         $ret[] = array(
             $contentInfo2,
@@ -223,7 +224,7 @@ abstract class TemplateBasedProviderTest extends PHPUnit_Framework_TestCase
             array( 'category' => "123456789" )
         );
 
-        $contentInfo3 = new ContentInfo( array( 'id' => 789, 'name' => "It's a kind of Magic" ) );
+        $contentInfo3 = new ContentInfo( array( 'id' => 789, 'mainLocationId' => 123, 'name' => "It's a kind of Magic" ) );
         $request3 = Request::create( '/queen/kind-of-magic/(foo)/bar', 'GET', array( 'some' => 'thing' ) );
         $ret[] = array(
             $contentInfo3,
