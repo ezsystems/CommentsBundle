@@ -9,9 +9,7 @@ parameters:
 services:
     ez_comments.renderer:
         class: %ez_comments.renderer.lazy.class%
-        calls:
-            - [setDefaultProviderLabel, [%ez_comments.default.default_provider%]]
-            - [setContainer, [@service_container]]
+        arguments: [@ezpublish.config.resolver, @service_container]
 
     ez_comments.twig.extension:
         class: %ez_comments.twig.extension.class%

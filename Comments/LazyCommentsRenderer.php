@@ -9,10 +9,14 @@
 
 namespace EzSystems\CommentsBundle\Comments;
 
+use eZ\Publish\Core\MVC\ConfigResolverInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class LazyCommentsRenderer extends CommentsRenderer
 {
+    /**
+     * @var \Symfony\Component\DependencyInjection\ContainerInterface
+     */
     private $container;
 
     /**
@@ -20,9 +24,11 @@ class LazyCommentsRenderer extends CommentsRenderer
      */
     private $lazyProviders = array();
 
-    public function setContainer( ContainerInterface $container )
+    public function __construct( ConfigResolverInterface $configResolver, ContainerInterface $container, array $providers = array(), $defaultProvider = null )
     {
         $this->container = $container;
+        $defaultProvider = $defaultProvider ?: $configResolver->getParameter( 'default_provider', 'ez_comments' );
+        parent::__construct( $providers, $defaultProvider );
     }
 
     /**
