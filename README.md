@@ -16,39 +16,6 @@ CommentsBundle is **provider based**. This means that it is open to **any kind o
 ### Single entry point
 Render your comments with a single line of code.
 
-#### Rendering comments from an eZ Content
-Useful if you want to attach comments to a given content object.
-
-**Twig**
-
-```jinja
-{{ ez_comments_render_content( content.contentInfo ) }}
-```
-
-**PHP**
-
-```php
-/** @var \Symfony\Component\DependencyInjection\ContainerInterface $container */
-/** @var \eZ\Publish\API\Repository\Values\Content\ContentInfo $contentInfo */
-$commentsRenderer = $container->get( 'ez_comments.renderer' );
-$commentsRenderer->renderForContent( $contentInfo );
-```
-
-#### Rendering comments for current URL
-Useful if your comments are based on the current request (e.g. from a custom controller).
-
-**Twig**
-
-```jinja
-{{ ez_comments_render() }}
-```
-
-**PHP**
-```php
-/** @var \Symfony\Component\DependencyInjection\ContainerInterface $container */
-$commentsRenderer = $container->get( 'ez_comments.renderer' );
-$commentsRenderer->render();
-```
 
 ## Available integration
 
@@ -56,3 +23,12 @@ CommentsBundle currently works with the following commenting systems:
 * Disqus
 * Facebook comments
 
+## Documentation
+
+Documentation can be found in `Resources/doc/` folder.
+
+[Read the documentation](Resources/doc/index.md).
+
+## License
+
+This bundle is under **[GPL v2.0 license](http://www.gnu.org/licenses/gpl-2.0.html)**.
