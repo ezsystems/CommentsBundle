@@ -16,12 +16,11 @@ CommentsBundle is **provider based**. This means that it is open to **any kind o
 ### Single entry point
 Render your comments with a single line of code.
 
-
 ## Available integration
 
 CommentsBundle currently works with the following commenting systems:
-* Disqus
-* Facebook comments
+* [Disqus](Resources/doc/02-configuration.md#disqus)
+* [Facebook comments](Resources/doc/02-configuration.md#facebook)
 
 ## Documentation
 

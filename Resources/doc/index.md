@@ -52,7 +52,7 @@ You can always override options that are set in your configuration:
 ```
 
 Available options depends on each provider.
-Take a look at [providers configuration](02-configuration.md) to learn which options are available.
+Take a look at [providers configuration](02-configuration.md#provider-configuration) to learn which options are available.
 
 ### Overriding default provider
 When rendering comments, you can explicitly specify which comments provider you want to use instead of using the default one.
