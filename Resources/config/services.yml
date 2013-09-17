@@ -4,6 +4,7 @@ parameters:
     ez_comments.provider.factory.class: EzSystems\CommentsBundle\Comments\Provider\SiteAccessAwareFactory
     ez_comments.provider.null.class: EzSystems\CommentsBundle\Comments\Provider\Null
     ez_comments.provider.disqus.class: EzSystems\CommentsBundle\Comments\Provider\Disqus
+    ez_comments.provider.facebook.class: EzSystems\CommentsBundle\Comments\Provider\Facebook
 
 services:
     ez_comments.renderer:
@@ -36,3 +37,11 @@ services:
         arguments: [%ez_comments.provider.disqus.class%]
         tags:
             - { name: ez_comments.provider, alias: disqus }
+
+    ez_comments.provider.facebook:
+        class: %ez_comments.provider.facebook.class%
+        factory_service: ez_comments.provider.factory
+        factory_method: buildFacebook
+        arguments: [@ezpublish.api.service.location, @router]
+        tags:
+            - { name: ez_comments.provider, alias: facebook }
