@@ -10,11 +10,18 @@
 namespace EzSystems\CommentsBundle\Comments;
 
 use eZ\Publish\API\Repository\Values\Content\ContentInfo;
+use eZ\Publish\Core\MVC\Symfony\Matcher\MatcherFactoryInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use InvalidArgumentException;
 
-class CommentsRenderer implements ProviderInterface
+class CommentsRenderer implements ProviderInterface, ContentAuthorizerInterface
 {
+    /**
+     * @var \eZ\Publish\Core\MVC\Symfony\Matcher\MatcherFactoryInterface
+     */
+    private $matcherFactory;
+
     /**
      * Comments providers, indexed by their label.
      *
@@ -28,13 +35,28 @@ class CommentsRenderer implements ProviderInterface
     private $defaultProvider;
 
     /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    private $logger;
+
+    /**
+     * @param \eZ\Publish\Core\MVC\Symfony\Matcher\MatcherFactoryInterface $matcherFactory
      * @param ProviderInterface[] Comments providers, indexed by their label.
      * @param string|null $defaultProvider Label of provider to use by default. If not provided, the first entry in $providers will be used.
      */
-    public function __construct( array $providers = array(), $defaultProvider = null )
+    public function __construct( MatcherFactoryInterface $matcherFactory, array $providers = array(), $defaultProvider = null )
     {
+        $this->matcherFactory = $matcherFactory;
         $this->providers = $providers;
         $this->setDefaultProviderLabel( $defaultProvider );
+    }
+
+    /**
+     * @param LoggerInterface $logger
+     */
+    public function setLogger( LoggerInterface $logger )
+    {
+        $this->logger = $logger;
     }
 
     /**
@@ -153,9 +175,54 @@ class CommentsRenderer implements ProviderInterface
      */
     public function renderForContent( ContentInfo $contentInfo, Request $request, array $options = array() )
     {
-        $provider = isset( $options['provider'] ) ? $this->getProvider( $options['provider'] ) : $this->getDefaultProvider();
+        $commentsConfig = $this->getCommentsConfig( $contentInfo );
+        if ( isset( $commentsConfig['enabled'] ) && $commentsConfig['enabled'] === false )
+        {
+            if ( $this->logger )
+                $this->logger->debug( "Commenting is specifically disabled for content #$contentInfo->id" );
+
+            return;
+        }
+
+        /*
+         * Order of precedence for provider is:
+         * 1. $options['provider'] => specified directly.
+         * 2. $commentConfig['provider'] => configured provider for given content.
+         * 3. Defaut provider.
+         */
+        $providerLabel = $this->defaultProvider;
+        if ( isset( $options['provider'] ) )
+            $providerLabel = $options['provider'];
+        else if ( isset( $commentsConfig['provider'] ) )
+            $providerLabel = $commentsConfig['provider'];
+        $provider = $this->getProvider( $providerLabel );
         unset( $options['provider'] );
 
         return $provider->renderForContent( $contentInfo, $request, $options );
+    }
+
+    /**
+     * Returns true if it comments can be appended to a content, based on its ContentInfo.
+     *
+     * @param \eZ\Publish\API\Repository\Values\Content\ContentInfo $contentInfo
+     *
+     * @return bool
+     */
+    public function canCommentContent( ContentInfo $contentInfo )
+    {
+        $commentConfig = $this->getCommentsConfig( $contentInfo );
+        return !empty( $commentConfig['enabled'] );
+    }
+
+    /**
+     * @param \eZ\Publish\API\Repository\Values\Content\ContentInfo $contentInfo
+     *
+     * @note Matched config is cached in memory by underlying matcher factory.
+     *
+     * @return array|null
+     */
+    private function getCommentsConfig( ContentInfo $contentInfo )
+    {
+        return $this->matcherFactory->match( $contentInfo, 'comments' );
     }
 }

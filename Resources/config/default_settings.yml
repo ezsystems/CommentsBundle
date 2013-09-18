@@ -1,5 +1,6 @@
 parameters:
     ez_comments.default.default_provider: no_comments
+    ez_comments.default.content_comments: []
 
     # Disqus
     ez_comments.default.disqus.default_template: "EzSystemsCommentsBundle::disqus.html.twig"

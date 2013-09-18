@@ -28,7 +28,7 @@ class LazyCommentsRenderer extends CommentsRenderer
     {
         $this->container = $container;
         $defaultProvider = $defaultProvider ?: $configResolver->getParameter( 'default_provider', 'ez_comments' );
-        parent::__construct( $providers, $defaultProvider );
+        parent::__construct( $container->get( 'ez_comments.content_matcher_factory' ), $providers, $defaultProvider );
     }
 
     /**

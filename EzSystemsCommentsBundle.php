@@ -30,8 +30,8 @@ class EzSystemsCommentsBundle extends Bundle
     {
         return new EzSystemsCommentsExtension(
             array(
-                new DisqusConfigParser(),
                 new Common(),
+                new DisqusConfigParser(),
                 new Facebook()
             )
         );
