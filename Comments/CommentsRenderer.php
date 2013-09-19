@@ -198,6 +198,9 @@ class CommentsRenderer implements ProviderInterface, ContentAuthorizerInterface
         $provider = $this->getProvider( $providerLabel );
         unset( $options['provider'] );
 
+        // Merge configured options with explicitly passed options.
+        // Explicit options always have precedence.
+        $options = isset( $commentsConfig['options'] ) ? $options + $commentsConfig['options'] : $options;
         return $provider->renderForContent( $contentInfo, $request, $options );
     }
 

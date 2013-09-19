@@ -184,29 +184,43 @@ class CommentsRendererTest extends PHPUnit_Framework_TestCase
         );
 
         $contentInfo = new ContentInfo();
-        $request = new Request();
-        $options = array( 'some' => 'thing' );
-        $commentsList = 'I am a comment list from bar comments provider.';
-
         // Assume we have a configuration saying that we need to use "bar" provider
         $this->matcherFactoryMock
             ->expects( $this->once() )
             ->method( 'match' )
             ->with( $contentInfo, 'comments' )
-            ->will( $this->returnValue( array( 'enabled' => true, 'provider' => 'bar' ) ) );
+            ->will(
+                $this->returnValue(
+                    array(
+                        'enabled' => true,
+                        'provider' => 'bar',
+                        'options' => array( 'foo' => 'This should be overridden', 'some_configured_option' => 'some_value' )
+                    )
+                )
+            );
 
         // Default provider should not be called
         $defaultProvider
             ->expects( $this->never() )
             ->method( 'renderForContent' );
 
+        $request = new Request();
+        $commentsList = 'I am a comment list from bar comments provider.';
+        $explicitOptions = array( 'some' => 'thing', 'foo' => 'bar' );
+        // $expectedOptions are a mix between explicitly passed options and configured options.
+        // Explicit options have precedence.
+        $expectedOptions = array(
+            'some' => 'thing',
+            'foo' => 'bar',
+            'some_configured_option' => 'some_value'
+        );
         $barProvider
             ->expects( $this->once() )
             ->method( 'renderForContent' )
-            ->with( $contentInfo, $request, $options )
+            ->with( $contentInfo, $request, $expectedOptions )
             ->will( $this->returnValue( $commentsList ) );
 
-        $this->assertSame( $commentsList, $renderer->renderForContent( $contentInfo, $request, $options ) );
+        $this->assertSame( $commentsList, $renderer->renderForContent( $contentInfo, $request, $explicitOptions ) );
     }
 
     public function testCanCommentContent()
