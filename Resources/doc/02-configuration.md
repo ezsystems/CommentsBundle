@@ -1,5 +1,11 @@
 # EzSystemsCommentsBundle configuration
 
+* [General consideration](#general-consideration)
+* Provider configuration
+  * [Disqus](#disqus)
+  * [Facebook comments](#facebook)
+* [Matcher based configuration for content](#matcher-based-configuration-for-content-objects)
+
 ## General consideration
 EzSystemsCommentsBundle provides a semantic configuration (to be included in your `ezpublish.yml` or `config.yml`.
 
