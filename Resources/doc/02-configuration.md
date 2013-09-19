@@ -16,6 +16,23 @@ ez_comments:
         siteaccess_name:
             # Comments provider you want to use by default (e.g. "disqus").
             default_provider: provider_name
+
+            # Rules for comments on Content objects. If none provided, commenting will be allowed for any type of content.
+            content_comments:
+                my_comment_ruleset:
+                    # Indicates if comments are enabled or not. Default is true
+                    enabled:              true
+                    # Provider to use. Default is configured default_provider
+                    provider:             ~
+                    # Provider specific options. See available options for your provider.
+                    options:              []
+                    # Condition matchers configuration. You can use the same matchers as for selecting content view templates.
+                    match:
+                        # Example:
+                        Identifier\Contentype:
+                            - article
+                            - blog_post
+
             provider_name:
                 # Here comes provider's configuration
 ```
@@ -103,3 +120,54 @@ ez_comments:
 * `color_scheme`
 * `include_sdk`
 * `template`
+
+
+## Matcher based configuration for Content objects
+
+By default, comments are open for any type of content, but you can define configuration rules under `content_comments` key to enable/disable comments,
+select a specific provider or even override the provider options!
+
+You can do this by defining configuration blocks based on matchers. EzSystemsCommentsBundle uses the [same matchers as for
+template selection rules in eZ Publish kernel](https://confluence.ez.no/display/EZP/View+provider+configuration#Viewproviderconfiguration-Matchers).
+
+> **Note:** If you explicitly pass options to the comments renderer while options are set in a configuration block,
+> **explicit options will always have precedence**.
+
+### Example
+```yaml
+ez_comments:
+    system:
+        my_siteaccess:
+            default_provider: disqus
+
+            # Rules for comments on Content objects. If none provided, commenting will be allowed for any type of content.
+            # The first matched rule always have precedence, so be sure to set IDs first
+            content_comments:
+                # Disable comments for specific content
+                disabled_articles:
+                    enabled:              false
+                    match:
+                        Id\Content: [123, 789]
+                # Use facebook providers for articles and blog posts in "social_media" section
+                social_articles:
+                    enabled:             true
+                    provider:            facebook
+                    # Override default provider options.
+                    options:
+                        color_scheme: light
+                        num_posts: 20
+                    match:
+                        Identifier\ContentType:
+                            - article
+                            - blog_post
+                        Identifier\Section:  social_media
+
+                # Private articles use the default provider
+                private_articles:
+                    enabled:             true
+                    match:
+                        Identifier\ContentType:
+                            - article
+                            - blog_post
+                        Identifier\Section:  private
+```

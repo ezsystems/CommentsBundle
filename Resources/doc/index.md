@@ -1,9 +1,9 @@
-# Getting started with CommentsBundle
+# Getting started with EzSystemsCommentsBundle
 
 ## Installation
 
 1. [Setting up the bundle](01-setup.md)
-2. [Provider configuration](02-configuration.md)
+2. [Configuration](02-configuration.md)
 
 ## Usage
 
