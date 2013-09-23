@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "ezsystems/ezpublish-kernel": "*",
+        "ezsystems/ezpublish-kernel": "5.2.*@beta",
         "symfony-cmf/routing": "1.1.*@beta"
     },
     "autoload": {
