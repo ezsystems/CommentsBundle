@@ -8,8 +8,15 @@
             "email": "jv@ez.no"
         }
     ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/lolautruche/Archive.git"
+        }
+    ],
     "require": {
-        "ezsystems/ezpublish-kernel": "*",
+        "ezsystems/ezpublish-kernel": "~2013.07",
+        "zetacomponents/archive": "dev-fixUnpackPHP55",
         "symfony-cmf/routing": "1.1.*@beta"
     },
     "autoload": {
