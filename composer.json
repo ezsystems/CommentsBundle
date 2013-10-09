@@ -10,7 +10,7 @@
     ],
     "require": {
         "ezsystems/ezpublish-kernel": "*",
-        "symfony-cmf/routing": "1.1.*@beta"
+        "symfony-cmf/routing": "1.1.*@rc"
     },
     "autoload": {
         "psr-0": {"EzSystems\\CommentsBundle": ""}
