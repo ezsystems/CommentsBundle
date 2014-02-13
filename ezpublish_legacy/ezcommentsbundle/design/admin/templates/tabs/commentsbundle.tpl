@@ -1,3 +1,8 @@
 <div class="block">
-    {{ezcommentsbundle_render_comments }}
+    {symfony_render(
+        symfony_controller(
+            'ez_comments.controller.render:renderForContent',
+        hash( 'contentId', $node.contentobject_id )
+        )
+    )}
 </div>

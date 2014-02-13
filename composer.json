@@ -6,6 +6,10 @@
         {
             "name": "Jerome Vieilledent",
             "email": "jv@ez.no"
+        },
+        {
+            "name": "Bertrand Dunogier",
+            "email": "bd@ez.no"
         }
     ],
     "require": {
