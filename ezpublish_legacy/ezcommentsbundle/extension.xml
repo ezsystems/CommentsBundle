@@ -8,6 +8,10 @@
         <info_url>http://github.com/ezsystems/comments-bundle</info_url>
     </metadata>
 
-    <dependencies />
+    <dependencies>
+        <requires>
+            <extension name="ngsymfonytools" />
+        </requires>
+    </dependencies>
 
 </software>
