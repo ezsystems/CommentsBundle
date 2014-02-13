@@ -11,7 +11,7 @@
     "require": {
         "ezsystems/ezpublish-kernel": "*",
         "symfony-cmf/routing": "1.1.*",
-        "netgen/ngsymfonytools": "~1.0"
+        "ezsystems/ngsymfonytools-bundle": "dev-master"
     },
     "autoload": {
         "psr-0": {"EzSystems\\CommentsBundle": ""}
