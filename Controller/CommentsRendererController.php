@@ -1,6 +1,6 @@
 <?php
 /**
- * File containing the Render class.
+ * File containing the CommentsRendererController class.
  *
  * @copyright Copyright (C) 2014 eZ Systems AS. All rights reserved.
  * @license http://www.gnu.org/licenses/gpl-2.0.txt GNU General Public License v2
@@ -13,7 +13,7 @@ use EzSystems\CommentsBundle\Comments\ProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class Render
+class CommentsRendererController
 {
     /**
      * @var \EzSystems\CommentsBundle\Comments\ProviderInterface
