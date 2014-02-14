@@ -56,4 +56,4 @@ services:
         class: %ez_comments.controller.render.class%
         arguments: [@ez_comments.renderer, @ezpublish.api.service.content]
         calls:
-            - [setRequest, ['@?request=']]
+            - [setRequest, [@?request=]]
