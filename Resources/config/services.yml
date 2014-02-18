@@ -6,6 +6,7 @@ parameters:
     ez_comments.provider.null.class: EzSystems\CommentsBundle\Comments\Provider\Null
     ez_comments.provider.disqus.class: EzSystems\CommentsBundle\Comments\Provider\Disqus
     ez_comments.provider.facebook.class: EzSystems\CommentsBundle\Comments\Provider\Facebook
+    ez_comments.controller.comments_renderer.class: EzSystems\CommentsBundle\Controller\CommentsRendererController
 
 services:
     ez_comments.renderer:
@@ -50,3 +51,9 @@ services:
         arguments: [@ezpublish.api.service.location, @router]
         tags:
             - { name: ez_comments.provider, alias: facebook }
+
+    ez_comments.controller.comments_renderer:
+        class: %ez_comments.controller.comments_renderer.class%
+        arguments: [@ez_comments.renderer, @ezpublish.api.service.content]
+        calls:
+            - [setRequest, [@?request=]]

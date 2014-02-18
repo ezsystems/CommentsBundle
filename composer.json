@@ -6,11 +6,16 @@
         {
             "name": "Jerome Vieilledent",
             "email": "jv@ez.no"
+        },
+        {
+            "name": "Bertrand Dunogier",
+            "email": "bd@ez.no"
         }
     ],
     "require": {
         "ezsystems/ezpublish-kernel": "*",
-        "symfony-cmf/routing": "1.1.*"
+        "symfony-cmf/routing": "1.1.*",
+        "ezsystems/ngsymfonytools-bundle": "~1.0"
     },
     "autoload": {
         "psr-0": {"EzSystems\\CommentsBundle": ""}
