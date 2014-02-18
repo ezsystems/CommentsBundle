@@ -13,11 +13,12 @@ use EzSystems\CommentsBundle\Comments\ProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Renders comments lists and/or forms.
+ */
 class CommentsRendererController
 {
-    /**
-     * @var \EzSystems\CommentsBundle\Comments\ProviderInterface
-     */
+    /** @var \EzSystems\CommentsBundle\Comments\ProviderInterface */
     private $commentsRenderer;
 
     /** @var \eZ\Publish\API\Repository\ContentService */
@@ -37,7 +38,13 @@ class CommentsRendererController
         $this->request = $request;
     }
 
-    public function renderForContent( $contentId )
+    /**
+     * Renders the comments list for content with id $contentId
+     * Comment form might also be included
+     *
+     * @param mixed $contentId
+     */
+    public function renderForContentAction( $contentId )
     {
         return new Response(
             $this->commentsRenderer->renderForContent(
