@@ -10,6 +10,7 @@
 namespace EzSystems\CommentsBundle\Comments;
 
 use eZ\Publish\API\Repository\Values\Content\ContentInfo;
+use eZ\Publish\Core\MVC\ConfigResolverInterface;
 use eZ\Publish\Core\MVC\Symfony\Matcher\MatcherFactoryInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,14 +42,17 @@ class CommentsRenderer implements ProviderInterface, ContentAuthorizerInterface
 
     /**
      * @param \eZ\Publish\Core\MVC\Symfony\Matcher\MatcherFactoryInterface $matcherFactory
+     * @param \eZ\Publish\Core\MVC\ConfigResolverInterface $configResolver
      * @param ProviderInterface[] Comments providers, indexed by their label.
      * @param string|null $defaultProvider Label of provider to use by default. If not provided, the first entry in $providers will be used.
      */
-    public function __construct( MatcherFactoryInterface $matcherFactory, array $providers = array(), $defaultProvider = null )
+    public function __construct( MatcherFactoryInterface $matcherFactory, ConfigResolverInterface $configResolver, array $providers = array(), $defaultProvider = null )
     {
         $this->matcherFactory = $matcherFactory;
         $this->providers = $providers;
-        $this->setDefaultProviderLabel( $defaultProvider );
+        $this->setDefaultProviderLabel(
+            $defaultProvider ?: $configResolver->getParameter( 'default_provider', 'ez_comments' )
+        );
     }
 
     /**

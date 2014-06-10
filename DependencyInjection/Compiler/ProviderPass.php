@@ -12,6 +12,7 @@ namespace EzSystems\CommentsBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use LogicException;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * This compiler pass registers comments providers.
@@ -37,8 +38,8 @@ class ProviderPass implements CompilerPassInterface
                     throw new LogicException( 'ez_comments.renderer service tag needs an "alias" attribute to identify the comments provider. None given' );
 
                 $commentsRendererDef->addMethodCall(
-                    'addLazyProvider',
-                    array ( $id, $attribute['alias'] )
+                    'addProvider',
+                    array( new Reference( $id ), $attribute['alias'] )
                 );
             }
         }

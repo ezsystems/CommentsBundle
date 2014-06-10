@@ -1,5 +1,5 @@
 parameters:
-    ez_comments.renderer.lazy.class: EzSystems\CommentsBundle\Comments\LazyCommentsRenderer
+    ez_comments.renderer.lazy.class: EzSystems\CommentsBundle\Comments\CommentsRenderer
     ez_comments.twig.extension.class: EzSystems\CommentsBundle\Twig\Extension\CommentsExtension
     ez_comments.content_matcher_factory.class: EzSystems\CommentsBundle\Matcher\ContentMatcherFactory
     ez_comments.provider.factory.class: EzSystems\CommentsBundle\Comments\Provider\SiteAccessAwareFactory
@@ -11,7 +11,7 @@ parameters:
 services:
     ez_comments.renderer:
         class: %ez_comments.renderer.lazy.class%
-        arguments: [@ezpublish.config.resolver, @service_container]
+        arguments: [@ez_comments.content_matcher_factory, @ezpublish.config.resolver]
         calls:
             - [setLogger, [@logger]]
 
@@ -41,6 +41,7 @@ services:
         factory_service: ez_comments.provider.factory
         factory_method: buildDisqus
         arguments: [%ez_comments.provider.disqus.class%]
+        lazy: true
         tags:
             - { name: ez_comments.provider, alias: disqus }
 
@@ -49,6 +50,7 @@ services:
         factory_service: ez_comments.provider.factory
         factory_method: buildFacebook
         arguments: [@ezpublish.api.service.location, @router]
+        lazy: true
         tags:
             - { name: ez_comments.provider, alias: facebook }
 
