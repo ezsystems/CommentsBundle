@@ -12,7 +12,6 @@ namespace EzSystems\CommentsBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use LogicException;
-use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * This compiler pass registers comments providers.

@@ -2,7 +2,6 @@
 
 namespace EzSystems\CommentsBundle\DependencyInjection;
 
-use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;

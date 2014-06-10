@@ -10,7 +10,6 @@
 namespace EzSystems\CommentsBundle\Comments;
 
 use eZ\Publish\API\Repository\Values\Content\ContentInfo;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Interface for comment authorizers that are based on Content.
