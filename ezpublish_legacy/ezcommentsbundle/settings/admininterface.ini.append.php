@@ -9,3 +9,5 @@ Description=
 NavigationPartName=ezcontentnavigationpart
 HeaderTemplate=commentsbundle_header.tpl
 Template=commentsbundle.tpl
+*/
+

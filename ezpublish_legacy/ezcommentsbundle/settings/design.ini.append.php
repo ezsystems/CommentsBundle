@@ -2,3 +2,6 @@
 
 [ExtensionSettings]
 DesignExtensions[]=ezcommentsbundle
+
+*/
+
