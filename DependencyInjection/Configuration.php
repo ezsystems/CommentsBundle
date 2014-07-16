@@ -1,56 +1,111 @@
 <?php
+/**
+ * File containing the Configuration class.
+ *
+ * @copyright Copyright (C) eZ Systems AS. All rights reserved.
+ * @license For full copyright and license information view LICENSE file distributed with this source code.
+ * @version //autogentag//
+ */
 
 namespace EzSystems\CommentsBundle\DependencyInjection;
 
-use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Configuration\SiteAccessAware\Configuration as SiteAccessConfiguration;
+use Symfony\Component\Config\Definition\Builder\NodeBuilder;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
-use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
  * This is the class that validates and merges configuration from your app/config files
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html#cookbook-bundles-extension-config-class}
  */
-class Configuration implements ConfigurationInterface
+class Configuration extends SiteAccessConfiguration
 {
-    /**
-     * @var \EzSystems\CommentsBundle\DependencyInjection\Configuration\Parser[]
-     */
-    private $configParsers;
-
-    public function __construct( array $configParsers )
-    {
-        $this->configParsers = $configParsers;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root( 'ez_comments' );
 
-        $this->addSystemSection( $rootNode );
+        $systemNode = $this->generateScopeBaseNode( $rootNode );
+        $this->addCommonSettings( $systemNode );
+        $this->addDisqusSettings( $systemNode );
+        $this->addFacebookSettings( $systemNode );
 
         return $treeBuilder;
     }
 
-    private function addSystemSection( ArrayNodeDefinition $rootNode )
+    private function addCommonSettings( NodeBuilder $nodeBuilder )
     {
-        $systemNodeBuilder = $rootNode
-            ->children()
-                ->arrayNode( 'system' )
-                    ->info( 'System configuration. First key is always a siteaccess or siteaccess group name' )
-                    ->useAttributeAsKey( 'siteaccess_name' )
+        $nodeBuilder
+            ->scalarNode( 'default_provider' )
+                ->isRequired()
+                ->info( 'Comments provider you want to use by default (e.g. "disqus").' )
+            ->end()
+            ->arrayNode( 'content_comments' )
+                ->info( 'Rules for comments on Content objects. If none provided, commenting will be allowed for any type of content.' )
+                ->example(
+                    array(
+                        'public_articles' => array(
+                            'enabled' => true,
+                            'provider' => 'facebook',
+                            'match' => array(
+                                'Identifier\\ContentType' => array( 'article', 'blog_post' ),
+                                'Identifier\\Section' => 'standard',
+                            )
+                        ),
+                        'private_articles' => array(
+                            'enabled' => true,
+                            'provider' => 'disqus',
+                            'match' => array(
+                                'Identifier\\ContentType' => array( 'article', 'blog_post' ),
+                                'Identifier\\Section' => 'private',
+                            )
+                        )
+                    )
+                )
+                ->useAttributeAsKey( "my_comment_ruleset" )
+                ->prototype( "array" )
                     ->normalizeKeys( false )
-                    ->prototype( 'array' )
-                        ->children();
+                    ->children()
+                        ->booleanNode( "enabled" )->info( "Indicates if comments are enabled or not. Default is true" )->defaultTrue()->end()
+                        ->scalarNode( "provider" )->info( "Provider to use. Default is configured default_provider" )->end()
+                        ->arrayNode( "options" )
+                            ->info( 'Provider specific options. See available options for your provider.' )
+                            ->prototype( 'variable' )->end()
+                        ->end()
+                        ->arrayNode( "match" )
+                            ->info( 'Condition matchers configuration. You can use the same matchers as for selecting content view templates.' )
+                            ->example( array( 'Identifier\\Contentype' => array( 'article', 'blog_post' ) ) )
+                            ->useAttributeAsKey( "matcher" )
+                            ->prototype( "variable" )->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
+    }
 
-        // Delegate to configuration parsers
-        foreach ( $this->configParsers as $parser )
-        {
-            $parser->addSemanticConfig( $systemNodeBuilder );
-        }
+    private function addDisqusSettings( NodeBuilder $nodeBuilder )
+    {
+        $nodeBuilder
+            ->arrayNode( 'disqus' )
+                ->children()
+                    ->scalarNode( 'shortname' )->isRequired()->info( 'Disqus "shortname"' )->end()
+                    ->scalarNode( 'template' )->info( 'Template to use, overriding the built-in one.' )->end()
+                ->end()
+            ->end();
+    }
+
+    private function addFacebookSettings( NodeBuilder $nodeBuilder )
+    {
+        $nodeBuilder
+            ->arrayNode( 'facebook' )
+                ->children()
+                    ->scalarNode( 'app_id' )->isRequired()->info( 'Facebook application ID' )->end()
+                    ->scalarNode( 'width' )->info( 'Width for the comments box (default is 470)' )->end()
+                    ->scalarNode( 'num_posts' )->info( 'Number of comments to display (default is 10)' )->end()
+                    ->enumNode( 'color_scheme' )->info( 'Color scheme to use (can be "light" or "dark"). Default is "light"' )->values( array( 'light', 'dark' ) )->end()
+                    ->booleanNode( 'include_sdk' )->info( 'Whether to include Facebook JS SDK with the comments rendering. If set to false, you must include it on your own. Default is true.' )->end()
+                    ->scalarNode( 'template' )->info( 'Template to use, overriding the built-in one.' )->end()
+                ->end()
+            ->end();
     }
 }

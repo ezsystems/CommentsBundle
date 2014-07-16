@@ -1,8 +1,16 @@
 <?php
+/**
+ * File containing the EzSystemsCommentsExtension class.
+ *
+ * @copyright Copyright (C) eZ Systems AS. All rights reserved.
+ * @license For full copyright and license information view LICENSE file distributed with this source code.
+ * @version //autogentag//
+ */
 
 namespace EzSystems\CommentsBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\Container;
+use eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Configuration\SiteAccessAware\ConfigurationProcessor;
+use eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Configuration\SiteAccessAware\ContextualizerInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -15,19 +23,6 @@ use Symfony\Component\DependencyInjection\Loader;
  */
 class EzSystemsCommentsExtension extends Extension
 {
-    /**
-     * @var \EzSystems\CommentsBundle\DependencyInjection\Configuration\Parser[]
-     */
-    private $configParsers;
-
-    public function __construct( array $configParsers = array() )
-    {
-        $this->configParsers = $configParsers;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function load( array $configs, ContainerBuilder $container )
     {
         $configuration = $this->getConfiguration( $configs, $container );
@@ -37,16 +32,38 @@ class EzSystemsCommentsExtension extends Extension
         $loader->load( 'services.yml' );
         $loader->load( 'default_settings.yml' );
 
-        // Map settings
-        foreach ( $this->configParsers as $configParser )
-        {
-            $configParser->registerInternalConfig( $config, $container );
-        }
-    }
+        $processor = new ConfigurationProcessor( $container, 'ez_comments' );
+        $processor->mapConfig(
+            $config,
+            function ( $scopeSettings, $currentScope, ContextualizerInterface $contextualizer )
+            {
+                // Common settings
+                if ( isset( $scopeSettings['default_provider'] ) )
+                    $contextualizer->setContextualParameter( 'default_provider', $currentScope, $scopeSettings['default_provider'] );
+                if ( isset( $scopeSettings['content_comments'] ) )
+                    $contextualizer->setContextualParameter( 'content_comments', $currentScope, $scopeSettings['content_comments'] );
 
-    public function getConfiguration( array $config, ContainerBuilder $container )
-    {
-        return new Configuration( $this->configParsers );
+                // Disqus
+                if ( isset( $scopeSettings['disqus']['shortname'] ) )
+                    $contextualizer->setContextualParameter( 'disqus.shortname', $currentScope, $scopeSettings['disqus']['shortname'] );
+                if ( isset( $scopeSettings['disqus']['template'] ) )
+                    $contextualizer->setContextualParameter( 'disqus.default_template', $currentScope, $scopeSettings['disqus']['template'] );
+
+                // Facebook
+                if ( isset( $scopeSettings['facebook']['app_id'] ) )
+                    $contextualizer->setContextualParameter( 'facebook.app_id', $currentScope, $scopeSettings['facebook']['app_id'] );
+                if ( isset( $scopeSettings['facebook']['width'] ) )
+                    $contextualizer->setContextualParameter( 'facebook.width', $currentScope, $scopeSettings['facebook']['width'] );
+                if ( isset( $scopeSettings['facebook']['num_posts'] ) )
+                    $contextualizer->setContextualParameter( 'facebook.num_posts', $currentScope, $scopeSettings['facebook']['num_posts'] );
+                if ( isset( $scopeSettings['facebook']['color_scheme'] ) )
+                    $contextualizer->setContextualParameter( 'facebook.color_scheme', $currentScope, $scopeSettings['facebook']['color_scheme'] );
+                if ( isset( $scopeSettings['facebook']['include_sdk'] ) )
+                    $contextualizer->setContextualParameter( 'facebook.include_sdk', $currentScope, $scopeSettings['facebook']['include_sdk'] );
+                if ( isset( $scopeSettings['facebook']['template'] ) )
+                    $contextualizer->setContextualParameter( 'facebook.default_template', $currentScope, $scopeSettings['facebook']['template'] );
+            }
+        );
     }
 
     public function getAlias()

@@ -20,5 +20,6 @@
     "autoload": {
         "psr-0": {"EzSystems\\CommentsBundle": ""}
     },
-    "target-dir": "EzSystems/CommentsBundle"
+    "target-dir": "EzSystems/CommentsBundle",
+    "minimum-stability": "dev"
 }

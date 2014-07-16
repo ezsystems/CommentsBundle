@@ -28,12 +28,6 @@ class EzSystemsCommentsBundle extends Bundle
 
     public function getContainerExtension()
     {
-        return new EzSystemsCommentsExtension(
-            array(
-                new Common(),
-                new DisqusConfigParser(),
-                new Facebook()
-            )
-        );
+        return new EzSystemsCommentsExtension();
     }
 }
