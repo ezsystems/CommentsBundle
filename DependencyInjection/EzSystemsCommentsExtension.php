@@ -40,8 +40,6 @@ class EzSystemsCommentsExtension extends Extension
                 // Common settings
                 if ( isset( $scopeSettings['default_provider'] ) )
                     $contextualizer->setContextualParameter( 'default_provider', $currentScope, $scopeSettings['default_provider'] );
-                if ( isset( $scopeSettings['content_comments'] ) )
-                    $contextualizer->setContextualParameter( 'content_comments', $currentScope, $scopeSettings['content_comments'] );
 
                 // Disqus
                 if ( isset( $scopeSettings['disqus']['shortname'] ) )
@@ -64,6 +62,7 @@ class EzSystemsCommentsExtension extends Extension
                     $contextualizer->setContextualParameter( 'facebook.default_template', $currentScope, $scopeSettings['facebook']['template'] );
             }
         );
+        $processor->mapConfigArray( 'content_comments', $config, ContextualizerInterface::MERGE_FROM_SECOND_LEVEL );
     }
 
     public function getAlias()

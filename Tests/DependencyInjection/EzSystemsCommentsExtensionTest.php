@@ -79,6 +79,9 @@ class EzSystemsCommentsExtensionTest extends AbstractExtensionTestCase
                 'sa1' => array(
                     'default_provider' => $providerSa1
                 ),
+                'sa2' => array(
+                    'disqus' => array( 'shortname' => 'foo' )
+                ),
                 'sa_group' => array(
                     'default_provider' => $providerSaGroup
                 )
@@ -94,7 +97,7 @@ class EzSystemsCommentsExtensionTest extends AbstractExtensionTestCase
     public function testContentComments()
     {
         $providerSa1 = 'disqus';
-        $contentCommentsSa1 = array(
+        $contentCommentsSa1 = $expectedContentCommentsSa1 = array(
             'public_articles' => array(
                 'enabled' => true,
                 'provider' => 'facebook',
@@ -114,10 +117,28 @@ class EzSystemsCommentsExtensionTest extends AbstractExtensionTestCase
                 'options' => array( 'width' => 470 )
             )
         );
+
         $providerSaGroup = 'facebook';
         $contentCommentsSaGroup = array(
             'nights_watch_comments' => array(
+                'enabled' => false,
+                'provider' => 'raven',
+                'match' => array(
+                    'Identifier\\ContentType' => array( 'men_request', 'complaints' ),
+                ),
+            ),
+            'cersei_comments' => array(
                 'enabled' => true,
+                'provider' => 'i_dont_care',
+                'match' => array(
+                    'Identifier\\ContentType' => array( 'more_wine', 'more_blood' ),
+                    'Identifier\\Section' => 'private',
+                ),
+            )
+        );
+        $expectedCommentsSaGroup = array(
+            'nights_watch_comments' => array(
+                'enabled' => false,
                 'provider' => 'raven',
                 'match' => array(
                     'Identifier\\ContentType' => array( 'men_request', 'complaints' ),
@@ -134,11 +155,58 @@ class EzSystemsCommentsExtensionTest extends AbstractExtensionTestCase
                 'options' => array()
             )
         );
+
+        $providerSa2 = 'disqus';
+
+        $contentCommentsSa3 = array(
+            'melisandre_comments' => array(
+                'enabled' => true,
+                'provider' => 'stanis_baratheon',
+                'match' => array(
+                    'God\Type' => 'fire_fire_FIRE'
+                )
+            ),
+            'cersei_comments' => array(
+                'enabled' => false
+            ),
+            'nights_watch_comments' => array(
+                'enabled' => true
+            )
+        );
+        $expectedContentCommentsSa3 = array(
+            'nights_watch_comments' => array(
+                'enabled' => true,
+                'provider' => 'raven',
+                'match' => array(),
+                'options' => array()
+            ),
+            'cersei_comments' => array(
+                'enabled' => false,
+                'provider' => 'i_dont_care',
+                'match' => array(),
+                'options' => array()
+            ),
+            'melisandre_comments' => array(
+                'enabled' => true,
+                'provider' => 'stanis_baratheon',
+                'match' => array(
+                    'God\\Type' => 'fire_fire_FIRE'
+                ),
+                'options' => array()
+            )
+        );
+
         $config = array(
             'system' => array(
                 'sa1' => array(
                     'default_provider' => $providerSa1,
                     'content_comments' => $contentCommentsSa1,
+                ),
+                'sa2' => array(
+                    'default_provider' => $providerSa2
+                ),
+                'sa3' => array(
+                    'content_comments' => $contentCommentsSa3,
                 ),
                 'sa_group' => array(
                     'default_provider' => $providerSaGroup,
@@ -148,9 +216,14 @@ class EzSystemsCommentsExtensionTest extends AbstractExtensionTestCase
         );
         $this->load( $config );
 
-        $this->assertSame( $contentCommentsSa1, $this->configResolver->getParameter( 'content_comments', 'ez_comments', 'sa1' ) );
-        $this->assertSame( $contentCommentsSaGroup, $this->configResolver->getParameter( 'content_comments', 'ez_comments', 'sa2' ) );
-        $this->assertSame( $contentCommentsSaGroup, $this->configResolver->getParameter( 'content_comments', 'ez_comments', 'sa3' ) );
+        $this->assertSame( $providerSa1, $this->configResolver->getParameter( 'default_provider', 'ez_comments', 'sa1' ) );
+        $this->assertEquals( $expectedContentCommentsSa1, $this->configResolver->getParameter( 'content_comments', 'ez_comments', 'sa1' ) );
+
+        $this->assertSame( $providerSa2, $this->configResolver->getParameter( 'default_provider', 'ez_comments', 'sa2' ) );
+        $this->assertEquals( $expectedCommentsSaGroup, $this->configResolver->getParameter( 'content_comments', 'ez_comments', 'sa2' ) );
+
+        $this->assertSame( $providerSaGroup, $this->configResolver->getParameter( 'default_provider', 'ez_comments', 'sa3' ) );
+        $this->assertEquals( $expectedContentCommentsSa3, $this->configResolver->getParameter( 'content_comments', 'ez_comments', 'sa3' ) );
     }
 
     public function testDisqus()

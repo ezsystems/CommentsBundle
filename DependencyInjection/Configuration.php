@@ -37,7 +37,6 @@ class Configuration extends SiteAccessConfiguration
     {
         $nodeBuilder
             ->scalarNode( 'default_provider' )
-                ->isRequired()
                 ->info( 'Comments provider you want to use by default (e.g. "disqus").' )
             ->end()
             ->arrayNode( 'content_comments' )
@@ -66,7 +65,7 @@ class Configuration extends SiteAccessConfiguration
                 ->prototype( "array" )
                     ->normalizeKeys( false )
                     ->children()
-                        ->booleanNode( "enabled" )->info( "Indicates if comments are enabled or not. Default is true" )->defaultTrue()->end()
+                        ->booleanNode( "enabled" )->info( "Indicates if comments are enabled or not. Default is true" )->end()
                         ->scalarNode( "provider" )->info( "Provider to use. Default is configured default_provider" )->end()
                         ->arrayNode( "options" )
                             ->info( 'Provider specific options. See available options for your provider.' )
