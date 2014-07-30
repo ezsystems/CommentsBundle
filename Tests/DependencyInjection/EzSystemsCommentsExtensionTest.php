@@ -97,7 +97,7 @@ class EzSystemsCommentsExtensionTest extends AbstractExtensionTestCase
     public function testContentComments()
     {
         $providerSa1 = 'disqus';
-        $contentCommentsSa1 = $expectedContentCommentsSa1 = array(
+        $contentCommentsSa1 = array(
             'public_articles' => array(
                 'enabled' => true,
                 'provider' => 'facebook',
@@ -117,6 +117,7 @@ class EzSystemsCommentsExtensionTest extends AbstractExtensionTestCase
                 'options' => array( 'width' => 470 )
             )
         );
+        $expectedContentCommentsSa1 = array( 'comments' => $contentCommentsSa1 );
 
         $providerSaGroup = 'facebook';
         $contentCommentsSaGroup = array(
@@ -137,22 +138,24 @@ class EzSystemsCommentsExtensionTest extends AbstractExtensionTestCase
             )
         );
         $expectedCommentsSaGroup = array(
-            'nights_watch_comments' => array(
-                'enabled' => false,
-                'provider' => 'raven',
-                'match' => array(
-                    'Identifier\\ContentType' => array( 'men_request', 'complaints' ),
+            'comments' => array(
+                'nights_watch_comments' => array(
+                    'enabled' => false,
+                    'provider' => 'raven',
+                    'match' => array(
+                        'Identifier\\ContentType' => array( 'men_request', 'complaints' ),
+                    ),
+                    'options' => array()
                 ),
-                'options' => array()
-            ),
-            'cersei_comments' => array(
-                'enabled' => true,
-                'provider' => 'i_dont_care',
-                'match' => array(
-                    'Identifier\\ContentType' => array( 'more_wine', 'more_blood' ),
-                    'Identifier\\Section' => 'private',
-                ),
-                'options' => array()
+                'cersei_comments' => array(
+                    'enabled' => true,
+                    'provider' => 'i_dont_care',
+                    'match' => array(
+                        'Identifier\\ContentType' => array( 'more_wine', 'more_blood' ),
+                        'Identifier\\Section' => 'private',
+                    ),
+                    'options' => array()
+                )
             )
         );
 
@@ -170,29 +173,36 @@ class EzSystemsCommentsExtensionTest extends AbstractExtensionTestCase
                 'enabled' => false
             ),
             'nights_watch_comments' => array(
-                'enabled' => true
+                'enabled' => true,
+                'provider' => 'raven',
+                'match' => array(
+                    'Identifier\\ContentType' => array( 'men_request', 'complaints' ),
+                )
             )
         );
         $expectedContentCommentsSa3 = array(
-            'nights_watch_comments' => array(
-                'enabled' => true,
-                'provider' => 'raven',
-                'match' => array(),
-                'options' => array()
-            ),
-            'cersei_comments' => array(
-                'enabled' => false,
-                'provider' => 'i_dont_care',
-                'match' => array(),
-                'options' => array()
-            ),
-            'melisandre_comments' => array(
-                'enabled' => true,
-                'provider' => 'stanis_baratheon',
-                'match' => array(
-                    'God\\Type' => 'fire_fire_FIRE'
+            'comments' => array(
+                'nights_watch_comments' => array(
+                    'enabled' => true,
+                    'provider' => 'raven',
+                    'match' => array(
+                        'Identifier\\ContentType' => array( 'men_request', 'complaints' ),
+                    ),
+                    'options' => array()
                 ),
-                'options' => array()
+                'cersei_comments' => array(
+                    'enabled' => false,
+                    'match' => array(),
+                    'options' => array()
+                ),
+                'melisandre_comments' => array(
+                    'enabled' => true,
+                    'provider' => 'stanis_baratheon',
+                    'match' => array(
+                        'God\\Type' => 'fire_fire_FIRE'
+                    ),
+                    'options' => array()
+                )
             )
         );
 
