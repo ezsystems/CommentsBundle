@@ -13,8 +13,8 @@
         }
     ],
     "require": {
-        "ezsystems/ezpublish-kernel": "*",
-        "symfony-cmf/routing": "1.1.*",
+        "ezsystems/ezpublish-kernel": "~5.4|>=2014.11",
+        "symfony-cmf/routing": "~1.1",
         "ezsystems/ngsymfonytools-bundle": "~1.0"
     },
     "require-dev": {
