@@ -2,7 +2,7 @@
 <software>
     <metadata>
         <name>eZ Comments Bundle</name>
-        <version>//autogentag//</version>
+        <version>5.4.0</version>
         <copyright>Copyright (C) 1999 - 2014 eZ Systems</copyright>
         <license>GNU General Public License</license>
         <info_url>http://github.com/ezsystems/comments-bundle</info_url>
