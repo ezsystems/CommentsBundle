@@ -35,7 +35,7 @@ ez_comments:
                     # Condition matchers configuration. You can use the same matchers as for selecting content view templates.
                     match:
                         # Example:
-                        Identifier\Contentype:
+                        Identifier\ContentType:
                             - article
                             - blog_post
 
