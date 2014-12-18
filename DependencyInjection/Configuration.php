@@ -73,7 +73,7 @@ class Configuration extends SiteAccessConfiguration
                         ->end()
                         ->arrayNode( "match" )
                             ->info( 'Condition matchers configuration. You can use the same matchers as for selecting content view templates.' )
-                            ->example( array( 'Identifier\\Contentype' => array( 'article', 'blog_post' ) ) )
+                            ->example( array( 'Identifier\\ContentType' => array( 'article', 'blog_post' ) ) )
                             ->useAttributeAsKey( "matcher" )
                             ->prototype( "variable" )->end()
                         ->end()
