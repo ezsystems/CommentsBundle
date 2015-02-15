@@ -26,7 +26,7 @@ public function registerBundles()
 
 # C) Clear your legacy caches
 
-The CommentsBundle integrates into the legacy backoffice using the [LegacyBundles] feature. It integrates an ezcommentsbundle extension, automatically enabled, that adds a contextual comment tab to content in the backoffice. This tab will render the comments form, as configured with CommentsBundle, and allow moderation of comments, or posting of new ones (suppport depends on the active driver).
+The CommentsBundle integrates into the legacy backoffice using the [LegacyBundles] feature. It integrates an ezcommentsbundle extension, automatically enabled, that adds a contextual comment tab to content in the backoffice. This tab will render the comments form, as configured with CommentsBundle, and allow moderation of comments, or posting of new ones (support depends on the active driver).
 
 To enable this tab, make sure you clear the legacy cache after you have registered the bundles:
 `php app/console ezpublish:legacy:script bin/php/ezcache.php --clear-all`
