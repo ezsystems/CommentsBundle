@@ -13,7 +13,7 @@
         }
     ],
     "require": {
-        "ezsystems/ezpublish-kernel": "~5.4@rc",
+        "ezsystems/ezpublish-kernel": "~5.4",
         "symfony-cmf/routing": "~1.1",
         "ezsystems/ngsymfonytools-bundle": "~1.0"
     },
