@@ -38,8 +38,7 @@ services:
 
     ez_comments.provider.disqus:
         class: %ez_comments.provider.disqus.class%
-        factory_service: ez_comments.provider.factory
-        factory_method: buildDisqus
+        factory: ["@ez_comments.provider.factory", buildDisqus]
         arguments: [%ez_comments.provider.disqus.class%]
         lazy: true
         tags:
@@ -47,8 +46,7 @@ services:
 
     ez_comments.provider.facebook:
         class: %ez_comments.provider.facebook.class%
-        factory_service: ez_comments.provider.factory
-        factory_method: buildFacebook
+        factory: ["@ez_comments.provider.factory", buildFacebook]
         arguments: [@ezpublish.api.service.location, @router]
         lazy: true
         tags:
