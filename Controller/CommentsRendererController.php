@@ -24,18 +24,10 @@ class CommentsRendererController
     /** @var \eZ\Publish\API\Repository\ContentService */
     private $contentService;
 
-    /** @var \Symfony\Component\HttpFoundation\Request */
-    private $request;
-
     public function __construct( ProviderInterface $commentsRenderer, ContentService $contentService )
     {
         $this->commentsRenderer = $commentsRenderer;
         $this->contentService = $contentService;
-    }
-
-    public function setRequest( Request $request = null )
-    {
-        $this->request = $request;
     }
 
     /**
@@ -43,13 +35,15 @@ class CommentsRendererController
      * Comment form might also be included
      *
      * @param mixed $contentId
+     *
+     * @return Response
      */
-    public function renderForContentAction( $contentId )
+    public function renderForContentAction( $contentId, Request $request )
     {
         return new Response(
             $this->commentsRenderer->renderForContent(
                 $this->contentService->loadContentInfo( $contentId ),
-                $this->request
+                $request
             )
         );
     }

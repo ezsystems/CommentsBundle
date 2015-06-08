@@ -19,7 +19,7 @@ services:
         class: %ez_comments.twig.extension.class%
         arguments: [@ez_comments.renderer]
         calls:
-            - [setRequest, ['@?request=']]
+            - [setRequestStack, [@request_stack]]
         tags:
             - { name: twig.extension }
 
@@ -55,5 +55,3 @@ services:
     ez_comments.controller.comments_renderer:
         class: %ez_comments.controller.comments_renderer.class%
         arguments: [@ez_comments.renderer, @ezpublish.api.service.content]
-        calls:
-            - [setRequest, [@?request=]]
