@@ -10,7 +10,7 @@
 namespace EzSystems\CommentsBundle\Tests\Provider;
 
 use eZ\Publish\API\Repository\Values\Content\ContentInfo;
-use EzSystems\CommentsBundle\Comments\Provider\Disqus;
+use EzSystems\CommentsBundle\Comments\Provider\DisqusProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Templating\EngineInterface;
 
@@ -39,7 +39,7 @@ class DisqusTest extends TemplateBasedProviderTest
      */
     protected function getCommentsProvider( EngineInterface $templateEngine, $defaultTemplate )
     {
-        $provider = new Disqus( $templateEngine, $defaultTemplate );
+        $provider = new DisqusProvider( $templateEngine, $defaultTemplate );
         $provider->setShortName( static::SHORTNAME );
         return $provider;
     }
