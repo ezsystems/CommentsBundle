@@ -39,7 +39,7 @@ class SiteAccessAwareFactory
      */
     public function buildDisqus( $disqusProviderClass )
     {
-        /** @var \EzSystems\CommentsBundle\Comments\Provider\Disqus $disqusProvider */
+        /** @var \EzSystems\CommentsBundle\Comments\Provider\DisqusProvider $disqusProvider */
         $disqusProvider = new $disqusProviderClass();
         $disqusProvider->setTemplateEngine( $this->templateEngine );
         $disqusProvider->setDefaultTemplate(
@@ -58,7 +58,7 @@ class SiteAccessAwareFactory
      */
     public function buildFacebook( LocationService $locationService, RouterInterface $router )
     {
-        $facebookProvider = new Facebook(
+        $facebookProvider = new FacebookProvider(
             $this->configResolver->getParameter( 'facebook.app_id', 'ez_comments' ),
             array(
                 'width' => $this->configResolver->getParameter( 'facebook.width', 'ez_comments' ),

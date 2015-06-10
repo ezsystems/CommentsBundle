@@ -3,9 +3,9 @@ parameters:
     ez_comments.twig.extension.class: EzSystems\CommentsBundle\Twig\Extension\CommentsExtension
     ez_comments.content_matcher_factory.class: EzSystems\CommentsBundle\Matcher\ContentMatcherFactory
     ez_comments.provider.factory.class: EzSystems\CommentsBundle\Comments\Provider\SiteAccessAwareFactory
-    ez_comments.provider.null.class: EzSystems\CommentsBundle\Comments\Provider\Null
-    ez_comments.provider.disqus.class: EzSystems\CommentsBundle\Comments\Provider\Disqus
-    ez_comments.provider.facebook.class: EzSystems\CommentsBundle\Comments\Provider\Facebook
+    ez_comments.provider.null.class: EzSystems\CommentsBundle\Comments\Provider\NullProvider
+    ez_comments.provider.disqus.class: EzSystems\CommentsBundle\Comments\Provider\DisqusProvider
+    ez_comments.provider.facebook.class: EzSystems\CommentsBundle\Comments\Provider\FacebookProvider
     ez_comments.controller.comments_renderer.class: EzSystems\CommentsBundle\Controller\CommentsRendererController
 
 services:

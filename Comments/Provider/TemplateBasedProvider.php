@@ -18,7 +18,7 @@ use Symfony\Component\Templating\EngineInterface;
 abstract class TemplateBasedProvider implements ProviderInterface
 {
     /**
-     * Template to use by default to render Disqus thread.
+     * Template to use by default to render comments thread.
      *
      * @var string
      */

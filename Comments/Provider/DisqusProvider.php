@@ -1,6 +1,6 @@
 <?php
 /**
- * File containing the Null comments provider class.
+ * File containing the Disqus comments provider class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
@@ -10,11 +10,22 @@
 namespace EzSystems\CommentsBundle\Comments\Provider;
 
 use eZ\Publish\API\Repository\Values\Content\ContentInfo;
-use EzSystems\CommentsBundle\Comments\ProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class Null implements ProviderInterface
+class DisqusProvider extends TemplateBasedProvider
 {
+    /**
+     * Disqus forum's shortname.
+     *
+     * @var string
+     */
+    protected $shortName;
+
+    public function setShortName( $shortName )
+    {
+        $this->shortName = $shortName;
+    }
+
     /**
      * Renders the comments list.
      * Comment form might also be included.
@@ -26,12 +37,17 @@ class Null implements ProviderInterface
      */
     public function render( Request $request, array $options = array() )
     {
-        return;
+        return $this->doRender(
+            $options + array(
+                'shortname' => $this->shortName,
+                'identifier' => $request->getPathInfo(),
+            )
+        );
     }
 
     /**
      * Renders the comments list for a given content.
-     * Comment form might also be included
+     * Comment form might also be included.
      *
      * @param \eZ\Publish\API\Repository\Values\Content\ContentInfo $contentInfo
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -41,6 +57,13 @@ class Null implements ProviderInterface
      */
     public function renderForContent( ContentInfo $contentInfo, Request $request, array $options = array() )
     {
-        return;
+        return $this->doRender(
+            $options + array(
+                'shortname' => $this->shortName,
+                'identifier' => $contentInfo->id,
+                // TODO: Use translated name
+                'title' => $contentInfo->name,
+            )
+        );
     }
 }

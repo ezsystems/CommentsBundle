@@ -1,6 +1,6 @@
 <?php
 /**
- * File containing the Facebook comments provider class.
+ * File containing the FacebookProvider comments provider class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Templating\EngineInterface;
 
-class Facebook extends TemplateBasedProvider
+class FacebookProvider extends TemplateBasedProvider
 {
     const DEFAULT_WIDTH = 470;
     const DEFAULT_NUM_POSTS = 10;
@@ -23,7 +23,7 @@ class Facebook extends TemplateBasedProvider
     const DEFAULT_INCLUDE_SDK = true;
 
     /**
-     * Your Facebook application ID.
+     * Your FacebookProvider application ID.
      *
      * @var string
      */

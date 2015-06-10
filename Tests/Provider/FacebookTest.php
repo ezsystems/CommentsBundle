@@ -10,7 +10,7 @@
 namespace EzSystems\CommentsBundle\Tests\Provider;
 
 use eZ\Publish\API\Repository\Values\Content\ContentInfo;
-use EzSystems\CommentsBundle\Comments\Provider\Facebook;
+use EzSystems\CommentsBundle\Comments\Provider\FacebookProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Templating\EngineInterface;
 
@@ -49,7 +49,7 @@ class FacebookTest extends TemplateBasedProviderTest
      */
     protected function getCommentsProvider( EngineInterface $templateEngine, $defaultTemplate )
     {
-        return new Facebook( static::APP_ID, array(), $this->getLocationService(), $this->getRouter(), $templateEngine, $defaultTemplate );
+        return new FacebookProvider( static::APP_ID, array(), $this->getLocationService(), $this->getRouter(), $templateEngine, $defaultTemplate );
     }
 
     /**
@@ -90,10 +90,10 @@ class FacebookTest extends TemplateBasedProviderTest
     {
         return array(
             'app_id' => static::APP_ID,
-            'width' => Facebook::DEFAULT_WIDTH,
-            'num_posts' => Facebook::DEFAULT_NUM_POSTS,
-            'color_scheme' => Facebook::DEFAULT_COLOR_SCHEME,
-            'include_sdk' => Facebook::DEFAULT_INCLUDE_SDK,
+            'width' => FacebookProvider::DEFAULT_WIDTH,
+            'num_posts' => FacebookProvider::DEFAULT_NUM_POSTS,
+            'color_scheme' => FacebookProvider::DEFAULT_COLOR_SCHEME,
+            'include_sdk' => FacebookProvider::DEFAULT_INCLUDE_SDK,
             'url' => $request->getSchemeAndHttpHost() . $request->attributes->get( 'semanticPathinfo', $request->getPathInfo() )
         );
     }
@@ -111,10 +111,10 @@ class FacebookTest extends TemplateBasedProviderTest
     {
         return array(
             'app_id' => static::APP_ID,
-            'width' => Facebook::DEFAULT_WIDTH,
-            'num_posts' => Facebook::DEFAULT_NUM_POSTS,
-            'color_scheme' => Facebook::DEFAULT_COLOR_SCHEME,
-            'include_sdk' => Facebook::DEFAULT_INCLUDE_SDK,
+            'width' => FacebookProvider::DEFAULT_WIDTH,
+            'num_posts' => FacebookProvider::DEFAULT_NUM_POSTS,
+            'color_scheme' => FacebookProvider::DEFAULT_COLOR_SCHEME,
+            'include_sdk' => FacebookProvider::DEFAULT_INCLUDE_SDK,
         );
     }
 
