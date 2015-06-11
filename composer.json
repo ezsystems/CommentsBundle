@@ -13,7 +13,7 @@
         }
     ],
     "require": {
-        "ezsystems/ezpublish-kernel": "dev-master",
+        "ezsystems/ezpublish-kernel": "~6.0@dev",
         "symfony-cmf/routing": "~1.1"
     },
     "require-dev": {
@@ -26,5 +26,10 @@
     "autoload": {
         "psr-0": {"EzSystems\\CommentsBundle": ""}
     },
-    "target-dir": "EzSystems/CommentsBundle"
+    "target-dir": "EzSystems/CommentsBundle",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "6.0.x-dev"
+        }
+    }
 }
