@@ -1,9 +1,11 @@
 <?php
+
 /**
  * File containing the CommentsExtension class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
+ *
  * @version //autogentag//
  */
 
@@ -26,7 +28,7 @@ class CommentsExtension extends Twig_Extension
      */
     private $commentsRenderer;
 
-    public function __construct( ProviderInterface $commentsRenderer )
+    public function __construct(ProviderInterface $commentsRenderer)
     {
         $this->commentsRenderer = $commentsRenderer;
     }
@@ -46,19 +48,19 @@ class CommentsExtension extends Twig_Extension
         return array(
             new Twig_SimpleFunction(
                 'ez_comments_render',
-                array( $this, 'render' ),
-                array( 'is_safe' => array( 'html' ) )
+                array($this, 'render'),
+                array('is_safe' => array('html'))
             ),
             new Twig_SimpleFunction(
                 'ez_comments_render_content',
-                array( $this, 'renderForContent' ),
-                array( 'is_safe' => array( 'html' ) )
-            )
+                array($this, 'renderForContent'),
+                array('is_safe' => array('html'))
+            ),
         );
     }
 
     /**
-     * Triggers comments rendering
+     * Triggers comments rendering.
      *
      * @param array $options
      * @param string|null $provider Label of the provider to use. If null, the default provider will be used.
@@ -67,20 +69,18 @@ class CommentsExtension extends Twig_Extension
      *
      * @return string
      */
-    public function render( array $options = array(), $provider = null )
+    public function render(array $options = array(), $provider = null)
     {
-        if ( isset( $provider ) )
-        {
+        if (isset($provider)) {
             $options['provider'] = $provider;
         }
 
         $request = $this->getCurrentRequest();
-        if ( !isset( $request ) )
-        {
-            throw new RuntimeException( 'Comments rendering needs the Request.' );
+        if (!isset($request)) {
+            throw new RuntimeException('Comments rendering needs the Request.');
         }
 
-        return $this->commentsRenderer->render( $request, $options );
+        return $this->commentsRenderer->render($request, $options);
     }
 
     /**
@@ -91,21 +91,20 @@ class CommentsExtension extends Twig_Extension
      * @param string|null $provider Label of the provider to use. If null, the default provider will be used.
      *
      * @return mixed
+     *
      * @throws \RuntimeException
      */
-    public function renderForContent( ContentInfo $contentInfo, array $options = array(), $provider = null )
+    public function renderForContent(ContentInfo $contentInfo, array $options = array(), $provider = null)
     {
-        if ( isset( $provider ) )
-        {
+        if (isset($provider)) {
             $options['provider'] = $provider;
         }
 
         $request = $this->getCurrentRequest();
-        if ( !isset( $request ) )
-        {
-            throw new RuntimeException( 'Comments rendering needs the Request.' );
+        if (!isset($request)) {
+            throw new RuntimeException('Comments rendering needs the Request.');
         }
 
-        return $this->commentsRenderer->renderForContent( $contentInfo, $request, $options );
+        return $this->commentsRenderer->renderForContent($contentInfo, $request, $options);
     }
 }

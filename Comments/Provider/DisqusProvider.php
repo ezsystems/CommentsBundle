@@ -1,9 +1,11 @@
 <?php
+
 /**
  * File containing the Disqus comments provider class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
+ *
  * @version //autogentag//
  */
 
@@ -21,7 +23,7 @@ class DisqusProvider extends TemplateBasedProvider
      */
     protected $shortName;
 
-    public function setShortName( $shortName )
+    public function setShortName($shortName)
     {
         $this->shortName = $shortName;
     }
@@ -35,7 +37,7 @@ class DisqusProvider extends TemplateBasedProvider
      *
      * @return string
      */
-    public function render( Request $request, array $options = array() )
+    public function render(Request $request, array $options = array())
     {
         return $this->doRender(
             $options + array(
@@ -55,7 +57,7 @@ class DisqusProvider extends TemplateBasedProvider
      *
      * @return mixed
      */
-    public function renderForContent( ContentInfo $contentInfo, Request $request, array $options = array() )
+    public function renderForContent(ContentInfo $contentInfo, Request $request, array $options = array())
     {
         return $this->doRender(
             $options + array(
