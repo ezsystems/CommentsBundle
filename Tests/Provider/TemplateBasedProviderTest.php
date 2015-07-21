@@ -1,9 +1,11 @@
 <?php
+
 /**
  * File containing the ProviderTest class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
+ *
  * @version //autogentag//
  */
 
@@ -25,7 +27,7 @@ abstract class TemplateBasedProviderTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->templateEngine = $this->getMock( 'Symfony\\Component\\Templating\\EngineInterface' );
+        $this->templateEngine = $this->getMock('Symfony\\Component\\Templating\\EngineInterface');
     }
 
     /**
@@ -44,18 +46,18 @@ abstract class TemplateBasedProviderTest extends PHPUnit_Framework_TestCase
      *
      * @return \EzSystems\CommentsBundle\Comments\Provider\TemplateBasedProvider
      */
-    abstract protected function getCommentsProvider( EngineInterface $templateEngine, $defaultTemplate );
+    abstract protected function getCommentsProvider(EngineInterface $templateEngine, $defaultTemplate);
 
     public function testSetGetDefaultTemplate()
     {
         $defaultTemplate = $this->getDefaultTemplate();
-        $provider = $this->getCommentsProvider( $this->templateEngine, $defaultTemplate );
-        $this->assertSame( $defaultTemplate, $provider->getDefaultTemplate() );
-        $this->assertSame( $this->templateEngine, $provider->getTemplateEngine() );
+        $provider = $this->getCommentsProvider($this->templateEngine, $defaultTemplate);
+        $this->assertSame($defaultTemplate, $provider->getDefaultTemplate());
+        $this->assertSame($this->templateEngine, $provider->getTemplateEngine());
 
         $newDefaultTemplate = 'foo.html.twig';
-        $provider->setDefaultTemplate( $newDefaultTemplate );
-        $this->assertSame( $newDefaultTemplate, $provider->getDefaultTemplate() );
+        $provider->setDefaultTemplate($newDefaultTemplate);
+        $this->assertSame($newDefaultTemplate, $provider->getDefaultTemplate());
     }
 
     /**
@@ -66,7 +68,7 @@ abstract class TemplateBasedProviderTest extends PHPUnit_Framework_TestCase
      *
      * @return array
      */
-    abstract protected function getExpectedOptions( Request $request );
+    abstract protected function getExpectedOptions(Request $request);
 
     /**
      * @dataProvider renderTestProvider
@@ -75,22 +77,22 @@ abstract class TemplateBasedProviderTest extends PHPUnit_Framework_TestCase
      * @param array $options Minimal options the provider is supposed to inject into its template
      * @param array $customOptions Custom options injected by higher call (e.g. from the template helper)
      */
-    public function testRender( Request $request, array $options, array $customOptions = array() )
+    public function testRender(Request $request, array $options, array $customOptions = array())
     {
         $renderedComments = "Guess what? I'm a comments thread!";
         $defaultTemplate = $this->getDefaultTemplate();
 
         $this->templateEngine
-            ->expects( $this->once() )
-            ->method( 'render' )
-            ->with( $defaultTemplate, $customOptions + $options )
-            ->will( $this->returnValue( $renderedComments ) );
+            ->expects($this->once())
+            ->method('render')
+            ->with($defaultTemplate, $customOptions + $options)
+            ->will($this->returnValue($renderedComments));
 
         $this->assertSame(
             $renderedComments,
             $this
-                ->getCommentsProvider( $this->templateEngine, $defaultTemplate )
-                ->render( $request, $customOptions )
+                ->getCommentsProvider($this->templateEngine, $defaultTemplate)
+                ->render($request, $customOptions)
         );
     }
 
@@ -101,40 +103,40 @@ abstract class TemplateBasedProviderTest extends PHPUnit_Framework_TestCase
      * @param array $options Minimal options the provider is supposed to inject into its template
      * @param array $customOptions Custom options injected by higher call (e.g. from the template helper)
      */
-    public function testRenderTemplateOverride( Request $request, array $options, array $customOptions = array() )
+    public function testRenderTemplateOverride(Request $request, array $options, array $customOptions = array())
     {
         $renderedComments = "Guess what? I'm a comments thread!";
         $template = 'override.html.twig';
 
         $this->templateEngine
-            ->expects( $this->once() )
-            ->method( 'render' )
-            ->with( $template, $customOptions + $options )
-            ->will( $this->returnValue( $renderedComments ) );
+            ->expects($this->once())
+            ->method('render')
+            ->with($template, $customOptions + $options)
+            ->will($this->returnValue($renderedComments));
 
         $this->assertSame(
             $renderedComments,
             $this
-                ->getCommentsProvider( $this->templateEngine, $template )
-                ->render( $request, $customOptions + array( 'template' => $template ) )
+                ->getCommentsProvider($this->templateEngine, $template)
+                ->render($request, $customOptions + array('template' => $template))
         );
     }
 
     public function renderTestProvider()
     {
-        $request1 = Request::create( '/foo/bar' );
-        $options1 = $this->getExpectedOptions( $request1 );
-        $customOptions1 = array( 'category' => "123456789" );
+        $request1 = Request::create('/foo/bar');
+        $options1 = $this->getExpectedOptions($request1);
+        $customOptions1 = array('category' => '123456789');
 
-        $request2 = Request::create( '/mySiteAccess/some/thing', 'GET', array( 'foo' => 'bar' ) );
-        $request2->attributes->set( 'siteaccess', new SiteAccess( 'mySiteAccess', 'uri' ) );
-        $request2->attributes->set( 'semanticPathinfo', '/some/thing' );
-        $options2 = $this->getExpectedOptions( $request2 );
-        $customOptions2 = array( 'category' => "123456789", 'lonely_var' => "I'm a poooooor lonesome cow-boy!" );
+        $request2 = Request::create('/mySiteAccess/some/thing', 'GET', array('foo' => 'bar'));
+        $request2->attributes->set('siteaccess', new SiteAccess('mySiteAccess', 'uri'));
+        $request2->attributes->set('semanticPathinfo', '/some/thing');
+        $options2 = $this->getExpectedOptions($request2);
+        $customOptions2 = array('category' => '123456789', 'lonely_var' => "I'm a poooooor lonesome cow-boy!");
 
         return array(
-            array( $request1, $options1, $customOptions1 ),
-            array( $request2, $options2, $customOptions2 ),
+            array($request1, $options1, $customOptions1),
+            array($request2, $options2, $customOptions2),
         );
     }
 
@@ -147,7 +149,7 @@ abstract class TemplateBasedProviderTest extends PHPUnit_Framework_TestCase
      *
      * @return array
      */
-    abstract protected function getExpectedOptionsForContent( ContentInfo $contentInfo, Request $request );
+    abstract protected function getExpectedOptionsForContent(ContentInfo $contentInfo, Request $request);
 
     /**
      * @dataProvider renderForContentTestProvider
@@ -157,22 +159,22 @@ abstract class TemplateBasedProviderTest extends PHPUnit_Framework_TestCase
      * @param array $options Minimal options the provider is supposed to inject into its template
      * @param array $customOptions Custom options injected by higher call (e.g. from the template helper)
      */
-    public function testRenderForContent( ContentInfo $contentInfo, Request $request, array $options, array $customOptions = array() )
+    public function testRenderForContent(ContentInfo $contentInfo, Request $request, array $options, array $customOptions = array())
     {
         $renderedComments = "I'm a comments thread for $contentInfo->id!";
         $defaultTemplate = $this->getDefaultTemplate();
 
         $this->templateEngine
-            ->expects( $this->once() )
-            ->method( 'render' )
-            ->with( $defaultTemplate, $customOptions + $options )
-            ->will( $this->returnValue( $renderedComments ) );
+            ->expects($this->once())
+            ->method('render')
+            ->with($defaultTemplate, $customOptions + $options)
+            ->will($this->returnValue($renderedComments));
 
         $this->assertSame(
             $renderedComments,
             $this
-                ->getCommentsProvider( $this->templateEngine, $defaultTemplate )
-                ->renderForContent( $contentInfo, $request, $customOptions )
+                ->getCommentsProvider($this->templateEngine, $defaultTemplate)
+                ->renderForContent($contentInfo, $request, $customOptions)
         );
     }
 
@@ -184,22 +186,22 @@ abstract class TemplateBasedProviderTest extends PHPUnit_Framework_TestCase
      * @param array $options
      * @param array $customOptions
      */
-    public function testRenderForContentTemplateOverride( ContentInfo $contentInfo, Request $request, array $options, array $customOptions = array() )
+    public function testRenderForContentTemplateOverride(ContentInfo $contentInfo, Request $request, array $options, array $customOptions = array())
     {
         $renderedComments = "I'm a comments thread for $contentInfo->id!";
         $template = 'override.html.twig';
 
         $this->templateEngine
-            ->expects( $this->once() )
-            ->method( 'render' )
-            ->with( $template, $customOptions + $options )
-            ->will( $this->returnValue( $renderedComments ) );
+            ->expects($this->once())
+            ->method('render')
+            ->with($template, $customOptions + $options)
+            ->will($this->returnValue($renderedComments));
 
         $this->assertSame(
             $renderedComments,
             $this
-                ->getCommentsProvider( $this->templateEngine, $template )
-                ->renderForContent( $contentInfo, $request, $customOptions + array( 'template' => $template ) )
+                ->getCommentsProvider($this->templateEngine, $template)
+                ->renderForContent($contentInfo, $request, $customOptions + array('template' => $template))
         );
     }
 
@@ -207,30 +209,30 @@ abstract class TemplateBasedProviderTest extends PHPUnit_Framework_TestCase
     {
         $ret = array();
 
-        $contentInfo1 = new ContentInfo( array( 'id' => 123, 'mainLocationId' => 456, 'name' => 'A developer walks into a bar' ) );
-        $request1 = Request::create( '/foo/bar' );
+        $contentInfo1 = new ContentInfo(array('id' => 123, 'mainLocationId' => 456, 'name' => 'A developer walks into a bar'));
+        $request1 = Request::create('/foo/bar');
         $ret[] = array(
             $contentInfo1,
             $request1,
-            $this->getExpectedOptionsForContent( $contentInfo1, $request1 )
+            $this->getExpectedOptionsForContent($contentInfo1, $request1),
         );
 
-        $contentInfo2 = new ContentInfo( array( 'id' => 456, 'mainLocationId' => 789, 'name' => 'Again a fake content' ) );
-        $request2 = Request::create( '/test/fake-content' );
+        $contentInfo2 = new ContentInfo(array('id' => 456, 'mainLocationId' => 789, 'name' => 'Again a fake content'));
+        $request2 = Request::create('/test/fake-content');
         $ret[] = array(
             $contentInfo2,
             $request2,
-            $this->getExpectedOptionsForContent( $contentInfo2, $request2 ),
-            array( 'category' => "123456789" )
+            $this->getExpectedOptionsForContent($contentInfo2, $request2),
+            array('category' => '123456789'),
         );
 
-        $contentInfo3 = new ContentInfo( array( 'id' => 789, 'mainLocationId' => 123, 'name' => "It's a kind of Magic" ) );
-        $request3 = Request::create( '/queen/kind-of-magic/(foo)/bar', 'GET', array( 'some' => 'thing' ) );
+        $contentInfo3 = new ContentInfo(array('id' => 789, 'mainLocationId' => 123, 'name' => "It's a kind of Magic"));
+        $request3 = Request::create('/queen/kind-of-magic/(foo)/bar', 'GET', array('some' => 'thing'));
         $ret[] = array(
             $contentInfo3,
             $request3,
-            $this->getExpectedOptionsForContent( $contentInfo3, $request3 ),
-            array( 'category' => "123456789", 'lonely_var' => "I'm a poooooor lonesome cow-boy!" )
+            $this->getExpectedOptionsForContent($contentInfo3, $request3),
+            array('category' => '123456789', 'lonely_var' => "I'm a poooooor lonesome cow-boy!"),
         );
 
         return $ret;
