@@ -1,9 +1,11 @@
 <?php
+
 /**
  * File containing the CommentsRenderer class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
+ *
  * @version //autogentag//
  */
 
@@ -46,19 +48,19 @@ class CommentsRenderer implements ProviderInterface, ContentAuthorizerInterface
      * @param ProviderInterface[] Comments providers, indexed by their label.
      * @param string|null $defaultProvider Label of provider to use by default. If not provided, the first entry in $providers will be used.
      */
-    public function __construct( MatcherFactoryInterface $matcherFactory, ConfigResolverInterface $configResolver, array $providers = array(), $defaultProvider = null )
+    public function __construct(MatcherFactoryInterface $matcherFactory, ConfigResolverInterface $configResolver, array $providers = array(), $defaultProvider = null)
     {
         $this->matcherFactory = $matcherFactory;
         $this->providers = $providers;
         $this->setDefaultProviderLabel(
-            $defaultProvider ?: $configResolver->getParameter( 'default_provider', 'ez_comments' )
+            $defaultProvider ?: $configResolver->getParameter('default_provider', 'ez_comments')
         );
     }
 
     /**
      * @param LoggerInterface $logger
      */
-    public function setLogger( LoggerInterface $logger )
+    public function setLogger(LoggerInterface $logger)
     {
         $this->logger = $logger;
     }
@@ -68,7 +70,7 @@ class CommentsRenderer implements ProviderInterface, ContentAuthorizerInterface
      *
      * @param string $defaultProvider Label of the provider to use.
      */
-    public function setDefaultProviderLabel( $defaultProvider )
+    public function setDefaultProviderLabel($defaultProvider)
     {
         $this->defaultProvider = $defaultProvider;
     }
@@ -91,12 +93,12 @@ class CommentsRenderer implements ProviderInterface, ContentAuthorizerInterface
      */
     public function getDefaultProvider()
     {
-        if ( isset( $this->defaultProvider ) )
-        {
-            return $this->getProvider( $this->defaultProvider );
+        if (isset($this->defaultProvider)) {
+            return $this->getProvider($this->defaultProvider);
         }
 
-        $providerLabels = array_keys( $this->providers );
+        $providerLabels = array_keys($this->providers);
+
         return $this->providers[$providerLabels[0]];
     }
 
@@ -104,7 +106,7 @@ class CommentsRenderer implements ProviderInterface, ContentAuthorizerInterface
      * @param ProviderInterface $provider
      * @param string $label
      */
-    public function addProvider( ProviderInterface $provider, $label )
+    public function addProvider(ProviderInterface $provider, $label)
     {
         $this->providers[$label] = $provider;
     }
@@ -114,13 +116,13 @@ class CommentsRenderer implements ProviderInterface, ContentAuthorizerInterface
      *
      * @return bool
      */
-    public function hasProvider( $label )
+    public function hasProvider($label)
     {
-        return isset( $this->providers[$label] );
+        return isset($this->providers[$label]);
     }
 
     /**
-     * Retrieves a comments provider by its label
+     * Retrieves a comments provider by its label.
      *
      * @param $label
      *
@@ -128,18 +130,17 @@ class CommentsRenderer implements ProviderInterface, ContentAuthorizerInterface
      *
      * @throws \InvalidArgumentException
      */
-    public function getProvider( $label )
+    public function getProvider($label)
     {
-        if ( !isset( $this->providers[$label] ) )
-        {
-            throw new InvalidArgumentException( "Unknown comments provider '$label'" );
+        if (!isset($this->providers[$label])) {
+            throw new InvalidArgumentException("Unknown comments provider '$label'");
         }
 
         return $this->providers[$label];
     }
 
     /**
-     * Returns all available providers
+     * Returns all available providers.
      *
      * @return ProviderInterface[]
      */
@@ -159,17 +160,17 @@ class CommentsRenderer implements ProviderInterface, ContentAuthorizerInterface
      *
      * @return string
      */
-    public function render( Request $request, array $options = array() )
+    public function render(Request $request, array $options = array())
     {
-        $provider = isset( $options['provider'] ) ? $this->getProvider( $options['provider'] ) : $this->getDefaultProvider();
-        unset( $options['provider'] );
+        $provider = isset($options['provider']) ? $this->getProvider($options['provider']) : $this->getDefaultProvider();
+        unset($options['provider']);
 
-        return $provider->render( $request, $options );
+        return $provider->render($request, $options);
     }
 
     /**
      * Renders the comments list for a given content.
-     * Comment form might also be included
+     * Comment form might also be included.
      *
      * @param \eZ\Publish\API\Repository\Values\Content\ContentInfo $contentInfo
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -177,13 +178,13 @@ class CommentsRenderer implements ProviderInterface, ContentAuthorizerInterface
      *
      * @return mixed
      */
-    public function renderForContent( ContentInfo $contentInfo, Request $request, array $options = array() )
+    public function renderForContent(ContentInfo $contentInfo, Request $request, array $options = array())
     {
-        $commentsConfig = $this->getCommentsConfig( $contentInfo );
-        if ( isset( $commentsConfig['enabled'] ) && $commentsConfig['enabled'] === false )
-        {
-            if ( $this->logger )
-                $this->logger->debug( "Commenting is specifically disabled for content #$contentInfo->id" );
+        $commentsConfig = $this->getCommentsConfig($contentInfo);
+        if (isset($commentsConfig['enabled']) && $commentsConfig['enabled'] === false) {
+            if ($this->logger) {
+                $this->logger->debug("Commenting is specifically disabled for content #$contentInfo->id");
+            }
 
             return;
         }
@@ -195,17 +196,19 @@ class CommentsRenderer implements ProviderInterface, ContentAuthorizerInterface
          * 3. Defaut provider.
          */
         $providerLabel = $this->defaultProvider;
-        if ( isset( $options['provider'] ) )
+        if (isset($options['provider'])) {
             $providerLabel = $options['provider'];
-        else if ( isset( $commentsConfig['provider'] ) )
+        } elseif (isset($commentsConfig['provider'])) {
             $providerLabel = $commentsConfig['provider'];
-        $provider = $this->getProvider( $providerLabel );
-        unset( $options['provider'] );
+        }
+        $provider = $this->getProvider($providerLabel);
+        unset($options['provider']);
 
         // Merge configured options with explicitly passed options.
         // Explicit options always have precedence.
-        $options = isset( $commentsConfig['options'] ) ? $options + $commentsConfig['options'] : $options;
-        return $provider->renderForContent( $contentInfo, $request, $options );
+        $options = isset($commentsConfig['options']) ? $options + $commentsConfig['options'] : $options;
+
+        return $provider->renderForContent($contentInfo, $request, $options);
     }
 
     /**
@@ -215,10 +218,11 @@ class CommentsRenderer implements ProviderInterface, ContentAuthorizerInterface
      *
      * @return bool
      */
-    public function canCommentContent( ContentInfo $contentInfo )
+    public function canCommentContent(ContentInfo $contentInfo)
     {
-        $commentConfig = $this->getCommentsConfig( $contentInfo );
-        return !empty( $commentConfig['enabled'] );
+        $commentConfig = $this->getCommentsConfig($contentInfo);
+
+        return !empty($commentConfig['enabled']);
     }
 
     /**
@@ -228,8 +232,8 @@ class CommentsRenderer implements ProviderInterface, ContentAuthorizerInterface
      *
      * @return array|null
      */
-    private function getCommentsConfig( ContentInfo $contentInfo )
+    private function getCommentsConfig(ContentInfo $contentInfo)
     {
-        return $this->matcherFactory->match( $contentInfo, 'comments' );
+        return $this->matcherFactory->match($contentInfo, 'comments');
     }
 }

@@ -1,9 +1,11 @@
 <?php
+
 /**
  * File containing the DisqusTest class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
+ *
  * @version //autogentag//
  */
 
@@ -37,10 +39,11 @@ class DisqusTest extends TemplateBasedProviderTest
      *
      * @return \EzSystems\CommentsBundle\Comments\Provider\TemplateBasedProvider
      */
-    protected function getCommentsProvider( EngineInterface $templateEngine, $defaultTemplate )
+    protected function getCommentsProvider(EngineInterface $templateEngine, $defaultTemplate)
     {
-        $provider = new DisqusProvider( $templateEngine, $defaultTemplate );
-        $provider->setShortName( static::SHORTNAME );
+        $provider = new DisqusProvider($templateEngine, $defaultTemplate);
+        $provider->setShortName(static::SHORTNAME);
+
         return $provider;
     }
 
@@ -52,11 +55,11 @@ class DisqusTest extends TemplateBasedProviderTest
      *
      * @return array
      */
-    protected function getExpectedOptions( Request $request )
+    protected function getExpectedOptions(Request $request)
     {
         return array(
             'shortname' => static::SHORTNAME,
-            'identifier' => $request->getPathInfo()
+            'identifier' => $request->getPathInfo(),
         );
     }
 
@@ -69,12 +72,12 @@ class DisqusTest extends TemplateBasedProviderTest
      *
      * @return array
      */
-    protected function getExpectedOptionsForContent( ContentInfo $contentInfo, Request $request )
+    protected function getExpectedOptionsForContent(ContentInfo $contentInfo, Request $request)
     {
         return array(
             'shortname' => static::SHORTNAME,
             'identifier' => $contentInfo->id,
-            'title' => $contentInfo->name
+            'title' => $contentInfo->name,
         );
     }
 }
