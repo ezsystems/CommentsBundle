@@ -8,12 +8,13 @@
  *
  * @version //autogentag//
  */
-
 namespace EzSystems\CommentsBundle\Comments;
 
+use eZ\Publish\API\Repository\ContentService;
 use eZ\Publish\API\Repository\Values\Content\ContentInfo;
 use eZ\Publish\Core\MVC\ConfigResolverInterface;
 use eZ\Publish\Core\MVC\Symfony\Matcher\MatcherFactoryInterface;
+use eZ\Publish\Core\MVC\Symfony\View\ContentView;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use InvalidArgumentException;
@@ -43,18 +44,30 @@ class CommentsRenderer implements ProviderInterface, ContentAuthorizerInterface
     private $logger;
 
     /**
+     * @var \eZ\Publish\API\Repository\ContentService
+     */
+    private $contentService;
+
+    /**
      * @param \eZ\Publish\Core\MVC\Symfony\Matcher\MatcherFactoryInterface $matcherFactory
      * @param \eZ\Publish\Core\MVC\ConfigResolverInterface $configResolver
+     * @param \eZ\Publish\API\Repository\ContentService $contentService
      * @param ProviderInterface[] Comments providers, indexed by their label.
      * @param string|null $defaultProvider Label of provider to use by default. If not provided, the first entry in $providers will be used.
      */
-    public function __construct(MatcherFactoryInterface $matcherFactory, ConfigResolverInterface $configResolver, array $providers = array(), $defaultProvider = null)
-    {
+    public function __construct(
+        MatcherFactoryInterface $matcherFactory,
+        ConfigResolverInterface $configResolver,
+        ContentService $contentService,
+        array $providers = array(),
+        $defaultProvider = null
+    ) {
         $this->matcherFactory = $matcherFactory;
         $this->providers = $providers;
         $this->setDefaultProviderLabel(
             $defaultProvider ?: $configResolver->getParameter('default_provider', 'ez_comments')
         );
+        $this->contentService = $contentService;
     }
 
     /**
@@ -234,6 +247,14 @@ class CommentsRenderer implements ProviderInterface, ContentAuthorizerInterface
      */
     private function getCommentsConfig(ContentInfo $contentInfo)
     {
-        return $this->matcherFactory->match($contentInfo, 'comments');
+        $view = new ContentView(null, [], 'comments');
+        $view->setContent($this->contentService->loadContentByContentInfo($contentInfo));
+
+        return $this->matcherFactory->match($view);
+    }
+
+    public function setContentService(ContentService $contentService)
+    {
+        $this->contentService = $contentService;
     }
 }
