@@ -13,7 +13,7 @@
         }
     ],
     "require": {
-        "ezsystems/ezpublish-kernel": "~6.0@dev",
+        "ezsystems/ezpublish-kernel": "~6.0@beta",
         "symfony-cmf/routing": "~1.1"
     },
     "require-dev": {
