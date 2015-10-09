@@ -8,7 +8,6 @@
  *
  * @version //autogentag//
  */
-
 namespace EzSystems\CommentsBundle\Tests\DependencyInjection;
 
 use eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Configuration\ConfigResolver;

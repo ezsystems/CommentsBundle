@@ -8,7 +8,6 @@
  *
  * @version //autogentag//
  */
-
 namespace EzSystems\CommentsBundle\DependencyInjection;
 
 use eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Configuration\SiteAccessAware\Configuration as SiteAccessConfiguration;
