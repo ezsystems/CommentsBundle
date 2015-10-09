@@ -8,7 +8,6 @@
  *
  * @version //autogentag//
  */
-
 namespace EzSystems\CommentsBundle\Twig\Extension;
 
 use eZ\Publish\API\Repository\Values\Content\ContentInfo;

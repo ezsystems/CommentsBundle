@@ -8,7 +8,6 @@
  *
  * @version //autogentag//
  */
-
 namespace EzSystems\CommentsBundle\Comments\Provider;
 
 use EzSystems\CommentsBundle\Comments\ProviderInterface;

@@ -8,7 +8,6 @@
  *
  * @version //autogentag//
  */
-
 namespace EzSystems\CommentsBundle\Controller;
 
 use eZ\Publish\API\Repository\ContentService;

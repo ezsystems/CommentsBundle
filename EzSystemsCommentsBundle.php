@@ -8,7 +8,6 @@
  *
  * @version //autogentag//
  */
-
 namespace EzSystems\CommentsBundle;
 
 use EzSystems\CommentsBundle\DependencyInjection\Compiler\ProviderPass;
