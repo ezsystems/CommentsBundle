@@ -8,7 +8,6 @@
  *
  * @version //autogentag//
  */
-
 namespace EzSystems\CommentsBundle\Tests\Provider;
 
 use eZ\Publish\API\Repository\Values\Content\ContentInfo;

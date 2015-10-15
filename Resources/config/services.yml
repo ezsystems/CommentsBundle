@@ -11,9 +11,10 @@ parameters:
 services:
     ez_comments.renderer:
         class: %ez_comments.renderer.lazy.class%
-        arguments: [@ez_comments.content_matcher_factory, @ezpublish.config.resolver]
+        arguments: [@ez_comments.content_matcher_factory, @ezpublish.config.resolver, @ezpublish.api.service.content]
         calls:
             - [setLogger, [@logger]]
+            - [setContentService, [@ezpublish.api.service.content]]
 
     ez_comments.twig.extension:
         class: %ez_comments.twig.extension.class%
