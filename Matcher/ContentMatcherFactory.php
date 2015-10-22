@@ -8,11 +8,10 @@
  *
  * @version //autogentag//
  */
-
 namespace EzSystems\CommentsBundle\Matcher;
 
-use eZ\Publish\API\Repository\Values\ValueObject;
 use eZ\Publish\Core\MVC\Symfony\Matcher\ContentMatcherFactory as BaseFactory;
+use eZ\Publish\Core\MVC\Symfony\View\View;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ContentMatcherFactory extends BaseFactory
@@ -42,13 +41,13 @@ class ContentMatcherFactory extends BaseFactory
         );
     }
 
-    public function match(ValueObject $valueObject, $viewType)
+    public function match(View $view)
     {
         if ($this->alwaysMatch === true) {
             return array('enabled' => true);
         }
 
-        return parent::match($valueObject, $viewType);
+        return parent::match($view);
     }
 
     /**

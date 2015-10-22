@@ -8,7 +8,6 @@
  *
  * @version //autogentag//
  */
-
 namespace EzSystems\CommentsBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
