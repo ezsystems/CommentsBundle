@@ -1,12 +1,13 @@
 <?php
+
 /**
  * File containing the ContentMatcherFactory class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
+ *
  * @version //autogentag//
  */
-
 namespace EzSystems\CommentsBundle\Matcher;
 
 use eZ\Publish\API\Repository\Values\ValueObject;
@@ -25,28 +26,28 @@ class ContentMatcherFactory extends BaseFactory
      */
     private $alwaysMatch = false;
 
-    public function __construct( ContainerInterface $container )
+    public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        $matchConfig = $this->container->get( 'ezpublish.config.resolver' )->getParameter( 'content_comments', 'ez_comments' );
+        $matchConfig = $this->container->get('ezpublish.config.resolver')->getParameter('content_comments', 'ez_comments');
         // If there is no matching rule, we consider that commenting is always allowed.
-        if ( empty( $matchConfig ) )
+        if (empty($matchConfig)) {
             $this->alwaysMatch = true;
+        }
 
         parent::__construct(
-            $this->container->get( 'ezpublish.api.repository' ),
+            $this->container->get('ezpublish.api.repository'),
             $matchConfig
         );
     }
 
-    public function match( ValueObject $valueObject, $viewType )
+    public function match(ValueObject $valueObject, $viewType)
     {
-        if ( $this->alwaysMatch === true )
-        {
-            return array( 'enabled' => true );
+        if ($this->alwaysMatch === true) {
+            return array('enabled' => true);
         }
 
-        return parent::match( $valueObject, $viewType );
+        return parent::match($valueObject, $viewType);
     }
 
     /**
@@ -54,11 +55,12 @@ class ContentMatcherFactory extends BaseFactory
      *
      * @return \eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\MatcherInterface
      */
-    protected function getMatcher( $matcherIdentifier )
+    protected function getMatcher($matcherIdentifier)
     {
-        if ( $this->container->has( $matcherIdentifier ) )
-            return $this->container->get( $matcherIdentifier );
+        if ($this->container->has($matcherIdentifier)) {
+            return $this->container->get($matcherIdentifier);
+        }
 
-        return parent::getMatcher( $matcherIdentifier );
+        return parent::getMatcher($matcherIdentifier);
     }
 }

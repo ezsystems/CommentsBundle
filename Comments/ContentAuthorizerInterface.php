@@ -1,12 +1,13 @@
 <?php
+
 /**
  * File containing the AuthorizerInterface class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
+ *
  * @version //autogentag//
  */
-
 namespace EzSystems\CommentsBundle\Comments;
 
 use eZ\Publish\API\Repository\Values\Content\ContentInfo;
@@ -24,5 +25,5 @@ interface ContentAuthorizerInterface
      *
      * @return bool
      */
-    public function canCommentContent( ContentInfo $contentInfo );
+    public function canCommentContent(ContentInfo $contentInfo);
 }

@@ -1,12 +1,13 @@
 <?php
+
 /**
  * File containing the ProviderInterface class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
+ *
  * @version //autogentag//
  */
-
 namespace EzSystems\CommentsBundle\Comments;
 
 use eZ\Publish\API\Repository\Values\Content\ContentInfo;
@@ -26,11 +27,11 @@ interface ProviderInterface
      *
      * @return string
      */
-    public function render( Request $request, array $options = array() );
+    public function render(Request $request, array $options = array());
 
     /**
      * Renders the comments list for a given content.
-     * Comment form might also be included
+     * Comment form might also be included.
      *
      * @param \eZ\Publish\API\Repository\Values\Content\ContentInfo $contentInfo
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -38,5 +39,5 @@ interface ProviderInterface
      *
      * @return mixed
      */
-    public function renderForContent( ContentInfo $contentInfo, Request $request, array $options = array() );
+    public function renderForContent(ContentInfo $contentInfo, Request $request, array $options = array());
 }

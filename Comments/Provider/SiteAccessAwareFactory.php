@@ -1,12 +1,13 @@
 <?php
+
 /**
  * File containing the SiteAccessAwareFactory class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
+ *
  * @version //autogentag//
  */
-
 namespace EzSystems\CommentsBundle\Comments\Provider;
 
 use eZ\Publish\API\Repository\LocationService;
@@ -26,7 +27,7 @@ class SiteAccessAwareFactory
      */
     protected $templateEngine;
 
-    public function __construct( ConfigResolverInterface $configResolver, EngineInterface $templateEngine )
+    public function __construct(ConfigResolverInterface $configResolver, EngineInterface $templateEngine)
     {
         $this->configResolver = $configResolver;
         $this->templateEngine = $templateEngine;
@@ -37,15 +38,15 @@ class SiteAccessAwareFactory
      *
      * @return \EzSystems\CommentsBundle\Comments\ProviderInterface
      */
-    public function buildDisqus( $disqusProviderClass )
+    public function buildDisqus($disqusProviderClass)
     {
         /** @var \EzSystems\CommentsBundle\Comments\Provider\DisqusProvider $disqusProvider */
         $disqusProvider = new $disqusProviderClass();
-        $disqusProvider->setTemplateEngine( $this->templateEngine );
+        $disqusProvider->setTemplateEngine($this->templateEngine);
         $disqusProvider->setDefaultTemplate(
-            $this->configResolver->getParameter( 'disqus.default_template', 'ez_comments' )
+            $this->configResolver->getParameter('disqus.default_template', 'ez_comments')
         );
-        $disqusProvider->setShortName( $this->configResolver->getParameter( 'disqus.shortname', 'ez_comments' ) );
+        $disqusProvider->setShortName($this->configResolver->getParameter('disqus.shortname', 'ez_comments'));
 
         return $disqusProvider;
     }
@@ -56,20 +57,20 @@ class SiteAccessAwareFactory
      *
      * @return \EzSystems\CommentsBundle\Comments\ProviderInterface
      */
-    public function buildFacebook( LocationService $locationService, RouterInterface $router )
+    public function buildFacebook(LocationService $locationService, RouterInterface $router)
     {
         $facebookProvider = new FacebookProvider(
-            $this->configResolver->getParameter( 'facebook.app_id', 'ez_comments' ),
+            $this->configResolver->getParameter('facebook.app_id', 'ez_comments'),
             array(
-                'width' => $this->configResolver->getParameter( 'facebook.width', 'ez_comments' ),
-                'num_posts' => $this->configResolver->getParameter( 'facebook.num_posts', 'ez_comments' ),
-                'color_scheme' => $this->configResolver->getParameter( 'facebook.color_scheme', 'ez_comments' ),
-                'include_sdk' => $this->configResolver->getParameter( 'facebook.include_sdk', 'ez_comments' ),
+                'width' => $this->configResolver->getParameter('facebook.width', 'ez_comments'),
+                'num_posts' => $this->configResolver->getParameter('facebook.num_posts', 'ez_comments'),
+                'color_scheme' => $this->configResolver->getParameter('facebook.color_scheme', 'ez_comments'),
+                'include_sdk' => $this->configResolver->getParameter('facebook.include_sdk', 'ez_comments'),
             ),
             $locationService,
             $router,
             $this->templateEngine,
-            $this->configResolver->getParameter( 'facebook.default_template', 'ez_comments' )
+            $this->configResolver->getParameter('facebook.default_template', 'ez_comments')
         );
 
         return $facebookProvider;

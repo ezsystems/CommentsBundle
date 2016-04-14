@@ -1,12 +1,13 @@
 <?php
+
 /**
  * File containing the FacebookTest class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
+ *
  * @version //autogentag//
  */
-
 namespace EzSystems\CommentsBundle\Tests\Provider;
 
 use eZ\Publish\API\Repository\Values\Content\ContentInfo;
@@ -16,7 +17,7 @@ use Symfony\Component\Templating\EngineInterface;
 
 class FacebookTest extends TemplateBasedProviderTest
 {
-    const APP_ID = "123";
+    const APP_ID = '123';
 
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|\eZ\Publish\API\Repository\LocationService
@@ -47,9 +48,9 @@ class FacebookTest extends TemplateBasedProviderTest
      *
      * @return \EzSystems\CommentsBundle\Comments\Provider\TemplateBasedProvider
      */
-    protected function getCommentsProvider( EngineInterface $templateEngine, $defaultTemplate )
+    protected function getCommentsProvider(EngineInterface $templateEngine, $defaultTemplate)
     {
-        return new FacebookProvider( static::APP_ID, array(), $this->getLocationService(), $this->getRouter(), $templateEngine, $defaultTemplate );
+        return new FacebookProvider(static::APP_ID, array(), $this->getLocationService(), $this->getRouter(), $templateEngine, $defaultTemplate);
     }
 
     /**
@@ -57,9 +58,8 @@ class FacebookTest extends TemplateBasedProviderTest
      */
     private function getLocationService()
     {
-        if ( !isset( $this->locationService ) )
-        {
-            $this->locationService = $this->getMock( 'eZ\\Publish\\API\\Repository\\LocationService' );
+        if (!isset($this->locationService)) {
+            $this->locationService = $this->getMock('eZ\\Publish\\API\\Repository\\LocationService');
         }
 
         return $this->locationService;
@@ -70,9 +70,8 @@ class FacebookTest extends TemplateBasedProviderTest
      */
     private function getRouter()
     {
-        if ( !isset( $this->router ) )
-        {
-            $this->router = $this->getMock( 'Symfony\\Component\\Routing\\RouterInterface' );
+        if (!isset($this->router)) {
+            $this->router = $this->getMock('Symfony\\Component\\Routing\\RouterInterface');
         }
 
         return $this->router;
@@ -86,7 +85,7 @@ class FacebookTest extends TemplateBasedProviderTest
      *
      * @return array
      */
-    protected function getExpectedOptions( Request $request )
+    protected function getExpectedOptions(Request $request)
     {
         return array(
             'app_id' => static::APP_ID,
@@ -94,7 +93,7 @@ class FacebookTest extends TemplateBasedProviderTest
             'num_posts' => FacebookProvider::DEFAULT_NUM_POSTS,
             'color_scheme' => FacebookProvider::DEFAULT_COLOR_SCHEME,
             'include_sdk' => FacebookProvider::DEFAULT_INCLUDE_SDK,
-            'url' => $request->getSchemeAndHttpHost() . $request->attributes->get( 'semanticPathinfo', $request->getPathInfo() )
+            'url' => $request->getSchemeAndHttpHost() . $request->attributes->get('semanticPathinfo', $request->getPathInfo()),
         );
     }
 
@@ -107,7 +106,7 @@ class FacebookTest extends TemplateBasedProviderTest
      *
      * @return array
      */
-    protected function getExpectedOptionsForContent( ContentInfo $contentInfo, Request $request )
+    protected function getExpectedOptionsForContent(ContentInfo $contentInfo, Request $request)
     {
         return array(
             'app_id' => static::APP_ID,
@@ -126,12 +125,12 @@ class FacebookTest extends TemplateBasedProviderTest
      * @param array $options Minimal options the provider is supposed to inject into its template
      * @param array $customOptions Custom options injected by higher call (e.g. from the template helper)
      */
-    public function testRenderForContent( ContentInfo $contentInfo, Request $request, array $options, array $customOptions = array() )
+    public function testRenderForContent(ContentInfo $contentInfo, Request $request, array $options, array $customOptions = array())
     {
         parent::testRenderForContent(
             $contentInfo,
             $request,
-            array( 'url' => $this->getContentUrl( $contentInfo ) ) + $options,
+            array('url' => $this->getContentUrl($contentInfo)) + $options,
             $customOptions
         );
     }
@@ -144,34 +143,34 @@ class FacebookTest extends TemplateBasedProviderTest
      * @param array $options Minimal options the provider is supposed to inject into its template
      * @param array $customOptions Custom options injected by higher call (e.g. from the template helper)
      */
-    public function testRenderForContentTemplateOverride( ContentInfo $contentInfo, Request $request, array $options, array $customOptions = array() )
+    public function testRenderForContentTemplateOverride(ContentInfo $contentInfo, Request $request, array $options, array $customOptions = array())
     {
         parent::testRenderForContentTemplateOverride(
             $contentInfo,
             $request,
-            array( 'url' => $this->getContentUrl( $contentInfo ) ) + $options,
+            array('url' => $this->getContentUrl($contentInfo)) + $options,
             $customOptions
         );
     }
 
-    private function getContentUrl( ContentInfo $contentInfo )
+    private function getContentUrl(ContentInfo $contentInfo)
     {
-        $mainLocation = $this->getMockBuilder( 'eZ\\Publish\\API\\Repository\\Values\\Content\\Location' )
-            ->setConstructorArgs( array( array( 'id' => $contentInfo->mainLocationId ) ) )
+        $mainLocation = $this->getMockBuilder('eZ\\Publish\\API\\Repository\\Values\\Content\\Location')
+            ->setConstructorArgs(array(array('id' => $contentInfo->mainLocationId)))
             ->getMock();
 
         $this->getLocationService()
-            ->expects( $this->once() )
-            ->method( 'loadLocation' )
-            ->with( $contentInfo->mainLocationId )
-            ->will( $this->returnValue( $mainLocation ) );
+            ->expects($this->once())
+            ->method('loadLocation')
+            ->with($contentInfo->mainLocationId)
+            ->will($this->returnValue($mainLocation));
 
         $expectedUrl = "http://ezpublish.dev/content/view/location/$contentInfo->mainLocationId";
         $this->getRouter()
-            ->expects( $this->once() )
-            ->method( 'generate' )
-            ->with( $mainLocation, array(), true )
-            ->will( $this->returnValue( $expectedUrl ) );
+            ->expects($this->once())
+            ->method('generate')
+            ->with($mainLocation, array(), true)
+            ->will($this->returnValue($expectedUrl));
 
         return $expectedUrl;
     }

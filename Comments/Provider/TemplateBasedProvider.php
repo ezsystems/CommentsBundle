@@ -1,12 +1,13 @@
 <?php
+
 /**
  * File containing the TemplateBasedProvider class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
+ *
  * @version //autogentag//
  */
-
 namespace EzSystems\CommentsBundle\Comments\Provider;
 
 use EzSystems\CommentsBundle\Comments\ProviderInterface;
@@ -29,7 +30,7 @@ abstract class TemplateBasedProvider implements ProviderInterface
      */
     private $templateEngine;
 
-    public function __construct( EngineInterface $templateEngine = null, $defaultTemplate = null )
+    public function __construct(EngineInterface $templateEngine = null, $defaultTemplate = null)
     {
         $this->templateEngine = $templateEngine;
         $this->defaultTemplate = $defaultTemplate;
@@ -41,7 +42,7 @@ abstract class TemplateBasedProvider implements ProviderInterface
      *
      * @param string $defaultTemplate
      */
-    public function setDefaultTemplate( $defaultTemplate )
+    public function setDefaultTemplate($defaultTemplate)
     {
         $this->defaultTemplate = $defaultTemplate;
     }
@@ -57,7 +58,7 @@ abstract class TemplateBasedProvider implements ProviderInterface
     /**
      * @param EngineInterface $templateEngine
      */
-    public function setTemplateEngine( EngineInterface $templateEngine )
+    public function setTemplateEngine(EngineInterface $templateEngine)
     {
         $this->templateEngine = $templateEngine;
     }
@@ -75,13 +76,14 @@ abstract class TemplateBasedProvider implements ProviderInterface
      * "template" option allows to override the default template for rendering.
      *
      * @param array $options
+     *
      * @return string
      */
-    protected function doRender( array $options )
+    protected function doRender(array $options)
     {
-        $template = isset( $options['template'] ) ? $options['template'] : $this->getDefaultTemplate();
-        unset( $options['template'] );
+        $template = isset($options['template']) ? $options['template'] : $this->getDefaultTemplate();
+        unset($options['template']);
 
-        return $this->templateEngine->render( $template, $options );
+        return $this->templateEngine->render($template, $options);
     }
 }
