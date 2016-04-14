@@ -10,7 +10,6 @@
 namespace EzSystems\CommentsBundle\Twig\Extension;
 
 use eZ\Publish\API\Repository\Values\Content\ContentInfo;
-use eZ\Publish\Core\MVC\Symfony\RequestStackAware;
 use EzSystems\CommentsBundle\Comments\ProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Twig_Extension;
@@ -19,12 +18,15 @@ use RuntimeException;
 
 class CommentsExtension extends Twig_Extension
 {
-    use RequestStackAware;
-
     /**
      * @var \EzSystems\CommentsBundle\Comments\ProviderInterface
      */
     private $commentsRenderer;
+
+    /**
+     * @var \Symfony\Component\HttpFoundation\Request
+     */
+    private $request;
 
     public function __construct( ProviderInterface $commentsRenderer )
     {
@@ -57,6 +59,11 @@ class CommentsExtension extends Twig_Extension
         );
     }
 
+    public function setRequest( Request $request = null )
+    {
+        $this->request = $request;
+    }
+
     /**
      * Triggers comments rendering
      *
@@ -74,13 +81,12 @@ class CommentsExtension extends Twig_Extension
             $options['provider'] = $provider;
         }
 
-        $request = $this->getCurrentRequest();
-        if ( !isset( $request ) )
+        if ( !isset( $this->request ) )
         {
             throw new RuntimeException( 'Comments rendering needs the Request.' );
         }
 
-        return $this->commentsRenderer->render( $request, $options );
+        return $this->commentsRenderer->render( $this->request, $options );
     }
 
     /**
@@ -100,12 +106,11 @@ class CommentsExtension extends Twig_Extension
             $options['provider'] = $provider;
         }
 
-        $request = $this->getCurrentRequest();
-        if ( !isset( $request ) )
+        if ( !isset( $this->request ) )
         {
             throw new RuntimeException( 'Comments rendering needs the Request.' );
         }
 
-        return $this->commentsRenderer->renderForContent( $contentInfo, $request, $options );
+        return $this->commentsRenderer->renderForContent( $contentInfo, $this->request, $options );
     }
 }
