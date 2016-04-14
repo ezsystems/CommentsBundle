@@ -60,7 +60,7 @@ class CommentsExtension extends Twig_Extension
         );
     }
 
-    public function setRequest( Request $request = null )
+    public function setRequest(Request $request = null)
     {
         $this->request = $request;
     }

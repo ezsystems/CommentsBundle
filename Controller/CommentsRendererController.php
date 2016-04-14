@@ -35,7 +35,7 @@ class CommentsRendererController
         $this->contentService = $contentService;
     }
 
-    public function setRequest( Request $request = null )
+    public function setRequest(Request $request = null)
     {
         $this->request = $request;
     }

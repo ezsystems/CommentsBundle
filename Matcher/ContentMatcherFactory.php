@@ -8,7 +8,6 @@
  *
  * @version //autogentag//
  */
-
 namespace EzSystems\CommentsBundle\Matcher;
 
 use eZ\Publish\API\Repository\Values\ValueObject;
