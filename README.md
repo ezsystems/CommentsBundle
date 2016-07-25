@@ -2,7 +2,7 @@
 
 [![Build Status](https://secure.travis-ci.org/ezsystems/CommentsBundle.png?branch=master)](http://travis-ci.org/ezsystems/CommentsBundle)
 
-CommentsBundle is an versatile extension for eZ Platform *(v6 for eZ Platform and v5 for eZ Publish Platform 5.x)* making commenting easy.
+CommentsBundle is an versatile bundle for eZ Platform *(v6 for eZ Platform and v5 for eZ Publish Platform 5.x)* making commenting easy.
 
 ## Features
 
