@@ -59,6 +59,7 @@ class DisqusTest extends TemplateBasedProviderTest
         return array(
             'shortname' => static::SHORTNAME,
             'identifier' => $request->getPathInfo(),
+            'count' => false,
         );
     }
 
@@ -77,6 +78,7 @@ class DisqusTest extends TemplateBasedProviderTest
             'shortname' => static::SHORTNAME,
             'identifier' => $contentInfo->id,
             'title' => $contentInfo->name,
+            'count' => false,
         );
     }
 }

@@ -22,9 +22,24 @@ class DisqusProvider extends TemplateBasedProvider
      */
     protected $shortName;
 
+    /**
+     * Enable count code.
+     *
+     * @var bool
+     */
+    protected $count = false;
+
     public function setShortName($shortName)
     {
         $this->shortName = $shortName;
+    }
+
+    /**
+     * @param bool $count
+     */
+    public function setCount($count)
+    {
+        $this->count = $count;
     }
 
     /**
@@ -42,6 +57,7 @@ class DisqusProvider extends TemplateBasedProvider
             $options + array(
                 'shortname' => $this->shortName,
                 'identifier' => $request->getPathInfo(),
+                'count' => $this->count,
             )
         );
     }
@@ -64,6 +80,7 @@ class DisqusProvider extends TemplateBasedProvider
                 'identifier' => $contentInfo->id,
                 // TODO: Use translated name
                 'title' => $contentInfo->name,
+                'count' => $this->count,
             )
         );
     }

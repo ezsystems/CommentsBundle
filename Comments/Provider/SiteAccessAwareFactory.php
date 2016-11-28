@@ -47,6 +47,7 @@ class SiteAccessAwareFactory
             $this->configResolver->getParameter('disqus.default_template', 'ez_comments')
         );
         $disqusProvider->setShortName($this->configResolver->getParameter('disqus.shortname', 'ez_comments'));
+        $disqusProvider->setCount($this->configResolver->getParameter('disqus.count', 'ez_comments'));
 
         return $disqusProvider;
     }

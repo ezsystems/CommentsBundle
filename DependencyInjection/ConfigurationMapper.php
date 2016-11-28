@@ -32,6 +32,9 @@ class ConfigurationMapper implements HookableConfigurationMapperInterface
         if (isset($scopeSettings['disqus']['template'])) {
             $contextualizer->setContextualParameter('disqus.default_template', $currentScope, $scopeSettings['disqus']['template']);
         }
+        if (isset($scopeSettings['disqus']['count'])) {
+            $contextualizer->setContextualParameter('disqus.count', $currentScope, $scopeSettings['disqus']['count']);
+        }
 
         // Facebook
         if (isset($scopeSettings['facebook']['app_id'])) {
