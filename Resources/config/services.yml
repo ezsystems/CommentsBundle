@@ -10,49 +10,49 @@ parameters:
 
 services:
     ez_comments.renderer:
-        class: %ez_comments.renderer.lazy.class%
-        arguments: [@ez_comments.content_matcher_factory, @ezpublish.config.resolver, @ezpublish.api.service.content]
+        class: '%ez_comments.renderer.lazy.class%'
+        arguments: ['@ez_comments.content_matcher_factory', '@ezpublish.config.resolver', '@ezpublish.api.service.content']
         calls:
-            - [setLogger, [@logger]]
-            - [setContentService, [@ezpublish.api.service.content]]
+            - [setLogger, ['@logger']]
+            - [setContentService, ['@ezpublish.api.service.content']]
 
     ez_comments.twig.extension:
-        class: %ez_comments.twig.extension.class%
-        arguments: [@ez_comments.renderer]
+        class: '%ez_comments.twig.extension.class%'
+        arguments: ['@ez_comments.renderer']
         calls:
-            - [setRequestStack, [@request_stack]]
+            - [setRequestStack, ['@request_stack']]
         tags:
             - { name: twig.extension }
 
     ez_comments.content_matcher_factory:
-        class: %ez_comments.content_matcher_factory.class%
-        arguments: [@service_container]
+        class: '%ez_comments.content_matcher_factory.class%'
+        arguments: ['@service_container']
 
     ez_comments.provider.factory:
-        class: %ez_comments.provider.factory.class%
-        arguments: [@ezpublish.config.resolver, @templating]
+        class: '%ez_comments.provider.factory.class%'
+        arguments: ['@ezpublish.config.resolver', '@templating']
 
     ez_comments.provider.null:
-        class: %ez_comments.provider.null.class%
+        class: '%ez_comments.provider.null.class%'
         tags:
             - { name: ez_comments.provider, alias: no_comments }
 
     ez_comments.provider.disqus:
-        class: %ez_comments.provider.disqus.class%
+        class: '%ez_comments.provider.disqus.class%'
         factory: ["@ez_comments.provider.factory", buildDisqus]
-        arguments: [%ez_comments.provider.disqus.class%]
+        arguments: ['%ez_comments.provider.disqus.class%']
         lazy: true
         tags:
             - { name: ez_comments.provider, alias: disqus }
 
     ez_comments.provider.facebook:
-        class: %ez_comments.provider.facebook.class%
+        class: '%ez_comments.provider.facebook.class%'
         factory: ["@ez_comments.provider.factory", buildFacebook]
-        arguments: [@ezpublish.api.service.location, @router]
+        arguments: ['@ezpublish.api.service.location', '@router']
         lazy: true
         tags:
             - { name: ez_comments.provider, alias: facebook }
 
     ez_comments.controller.comments_renderer:
-        class: %ez_comments.controller.comments_renderer.class%
-        arguments: [@ez_comments.renderer, @ezpublish.api.service.content]
+        class: '%ez_comments.controller.comments_renderer.class%'
+        arguments: ['@ez_comments.renderer', '@ezpublish.api.service.content']
