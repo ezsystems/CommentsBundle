@@ -90,6 +90,7 @@ class Configuration extends SiteAccessConfiguration
                 ->children()
                     ->scalarNode('shortname')->isRequired()->info('Disqus "shortname"')->end()
                     ->scalarNode('template')->info('Template to use, overriding the built-in one.')->end()
+                    ->booleanNode('count')->defaultFalse()->info('Indicates if count code should be loaded or not')->end()
                 ->end()
             ->end();
     }

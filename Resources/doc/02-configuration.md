@@ -74,7 +74,10 @@ ez_comments:
                 # Template to use, overriding the built-in one.
                 # Default template is "EzSystemsCommentsBundle::disqus.html.twig"
                 template:             ~
-```
+                
+                # Load JS code to render comment count
+                count: true|false
+```    
 
 #### Available options
 * `shortname`
@@ -83,6 +86,14 @@ ez_comments:
 * `url` (must be absolute, defaults to `window.location`)
 * `categoryId`
 * `template`
+
+#### Add comment count
+
+This bundle supports additional Disqus comments counter which is loaded in separate JavaScript file. 
+This counter is disabled by default and if you want to enable it, you have to follow these steps :
+
+- activate the count configuration
+- add an element with "disqus-comment-count" class as it is detailled in the [disqus documentation](https://help.disqus.com/customer/portal/articles/565624-adding-comment-count-links-to-your-home-page).
 
 ### Facebook
 Facebook provider is an integration of [Facebook Comments](https://developers.facebook.com/docs/reference/plugins/comments/)
