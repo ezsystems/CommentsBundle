@@ -2,6 +2,7 @@
     "name": "ezsystems/comments-bundle",
     "description": "Commenting system for eZ Publish",
     "license": "GPL-2.0",
+    "type": "ezplatform-bundle",
     "authors": [
         {
             "name": "Jerome Vieilledent",
