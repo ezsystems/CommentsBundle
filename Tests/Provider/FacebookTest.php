@@ -10,9 +10,12 @@
  */
 namespace EzSystems\CommentsBundle\Tests\Provider;
 
+use eZ\Publish\API\Repository\LocationService;
 use eZ\Publish\API\Repository\Values\Content\ContentInfo;
+use eZ\Publish\API\Repository\Values\Content\Location;
 use EzSystems\CommentsBundle\Comments\Provider\FacebookProvider;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Templating\EngineInterface;
 
 class FacebookTest extends TemplateBasedProviderTest
@@ -59,7 +62,7 @@ class FacebookTest extends TemplateBasedProviderTest
     private function getLocationService()
     {
         if (!isset($this->locationService)) {
-            $this->locationService = $this->getMock('eZ\\Publish\\API\\Repository\\LocationService');
+            $this->locationService = $this->createMock(LocationService::class);
         }
 
         return $this->locationService;
@@ -71,7 +74,9 @@ class FacebookTest extends TemplateBasedProviderTest
     private function getRouter()
     {
         if (!isset($this->router)) {
-            $this->router = $this->getMock('Symfony\\Component\\Routing\\RouterInterface');
+            $this->router = $this->getMockBuilder(RouterInterface::class)
+                ->disableOriginalConstructor()
+                ->getMock();
         }
 
         return $this->router;
@@ -155,7 +160,7 @@ class FacebookTest extends TemplateBasedProviderTest
 
     private function getContentUrl(ContentInfo $contentInfo)
     {
-        $mainLocation = $this->getMockBuilder('eZ\\Publish\\API\\Repository\\Values\\Content\\Location')
+        $mainLocation = $this->getMockBuilder(Location::class)
             ->setConstructorArgs(array(array('id' => $contentInfo->mainLocationId)))
             ->getMock();
 

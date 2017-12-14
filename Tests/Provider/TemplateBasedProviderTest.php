@@ -12,11 +12,11 @@ namespace EzSystems\CommentsBundle\Tests\Provider;
 
 use eZ\Publish\API\Repository\Values\Content\ContentInfo;
 use eZ\Publish\Core\MVC\Symfony\SiteAccess;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Templating\EngineInterface;
 
-abstract class TemplateBasedProviderTest extends PHPUnit_Framework_TestCase
+abstract class TemplateBasedProviderTest extends TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|\Symfony\Component\Templating\EngineInterface
@@ -26,7 +26,7 @@ abstract class TemplateBasedProviderTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->templateEngine = $this->getMock('Symfony\\Component\\Templating\\EngineInterface');
+        $this->templateEngine = $this->createMock(EngineInterface::class);
     }
 
     /**
