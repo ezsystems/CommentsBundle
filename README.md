@@ -1,7 +1,7 @@
 # EzSystemsCommentsBundle
 
 [![Build Status](https://img.shields.io/travis/ezsystems/CommentsBundle.svg?style=flat-square&branch=master)](https://travis-ci.org/ezsystems/CommentsBundle)
-[![Downloads](https://img.shields.io/packagist/dt/ezsystems/comments-bundle.svg?style=flat-square)](https://packagist.org/packages/ezsystems/comments-bundle)
+[![Downloads](https://img.shields.io/packagist/dt/ezsystems/comments-bundle.svg?style=flat-square)](https://packagist.org/packages/ezsystems/comments-bundle/stats)
 [![Latest version](https://img.shields.io/github/release/ezsystems/CommentsBundle.svg?style=flat-square)](https://github.com/ezsystems/CommentsBundle/releases)
 [![License](https://img.shields.io/packagist/l/ezsystems/comments-bundle.svg?style=flat-square)](LICENSE)
 
