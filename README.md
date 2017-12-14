@@ -1,6 +1,10 @@
 # EzSystemsCommentsBundle
 
-[![Build Status](https://secure.travis-ci.org/ezsystems/CommentsBundle.png?branch=master)](http://travis-ci.org/ezsystems/CommentsBundle)
+[![Build Status](https://img.shields.io/travis/ezsystems/CommentsBundle.svg?style=flat-square&branch=master)](https://travis-ci.org/ezsystems/CommentsBundle)
+[![Downloads](https://img.shields.io/packagist/dt/ezsystems/comments-bundle.svg?style=flat-square)](https://packagist.org/packages/ezsystems/comments-bundle)
+[![Latest version](https://img.shields.io/github/release/ezsystems/CommentsBundle.svg?style=flat-square)](https://github.com/ezsystems/CommentsBundle/releases)
+[![License](https://img.shields.io/packagist/l/ezsystems/comments-bundle.svg?style=flat-square)](LICENSE)
+
 
 CommentsBundle is an versatile bundle for eZ Platform *(v6 for eZ Platform and v5 for eZ Publish Platform 5.x)* making commenting easy.
 
