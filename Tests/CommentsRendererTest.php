@@ -11,12 +11,16 @@
 namespace EzSystems\CommentsBundle\Tests;
 
 use eZ\Publish\API\Repository\Values\Content\ContentInfo;
+use eZ\Publish\API\Repository\ContentService;
 use eZ\Publish\Core\Repository\Values\Content\Content;
+use eZ\Publish\Core\MVC\ConfigResolverInterface;
+use eZ\Publish\Core\MVC\Symfony\Matcher\MatcherFactoryInterface;
 use EzSystems\CommentsBundle\Comments\CommentsRenderer;
-use PHPUnit_Framework_TestCase;
+use EzSystems\CommentsBundle\Comments\ProviderInterface as CommentsProviderInterface;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 
-class CommentsRendererTest extends PHPUnit_Framework_TestCase
+class CommentsRendererTest extends TestCase
 {
     /** @var \PHPUnit_Framework_MockObject_MockObject|\eZ\Publish\Core\MVC\Symfony\Matcher\MatcherFactoryInterface */
     private $matcherFactoryMock;
@@ -30,11 +34,9 @@ class CommentsRendererTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->matcherFactoryMock = $this->getMock(
-            'eZ\\Publish\\Core\\MVC\\Symfony\\Matcher\\MatcherFactoryInterface'
-        );
-        $this->configResolverMock = $this->getMock('eZ\Publish\Core\MVC\ConfigResolverInterface');
-        $this->contentServiceMock = $this->getMock('eZ\Publish\API\Repository\ContentService');
+        $this->matcherFactoryMock = $this->createMock(MatcherFactoryInterface::class);
+        $this->configResolverMock = $this->createMock(ConfigResolverInterface::class);
+        $this->contentServiceMock = $this->createMock(ContentService::class);
 
         $this->contentServiceMock
             ->expects($this->any())
@@ -45,8 +47,8 @@ class CommentsRendererTest extends PHPUnit_Framework_TestCase
     public function testConstruct()
     {
         $providers = array(
-            'foo' => $this->getMock('EzSystems\\CommentsBundle\\Comments\\ProviderInterface'),
-            'bar' => $this->getMock('EzSystems\\CommentsBundle\\Comments\\ProviderInterface'),
+            'foo' => $this->createCommentsProviderMock(),
+            'bar' => $this->createCommentsProviderMock(),
         );
         $defaultRenderer = 'foo';
         $renderer = $this->createCommentsRenderer($providers, $defaultRenderer);
@@ -64,10 +66,10 @@ class CommentsRendererTest extends PHPUnit_Framework_TestCase
 
     public function testGetDefaultProvider()
     {
-        $expectedProvider = $this->getMock('EzSystems\\CommentsBundle\\Comments\\ProviderInterface');
+        $expectedProvider = $this->createCommentsProviderMock();
         $renderer = $this->createCommentsRenderer(
             array(
-                'foo' => $this->getMock('EzSystems\\CommentsBundle\\Comments\\ProviderInterface'),
+                'foo' => $this->createCommentsProviderMock(),
                 'bar' => $expectedProvider,
             ),
             'bar'
@@ -77,11 +79,11 @@ class CommentsRendererTest extends PHPUnit_Framework_TestCase
 
     public function testGetDefaultProviderNoLabelSpecified()
     {
-        $expectedProvider = $this->getMock('EzSystems\\CommentsBundle\\Comments\\ProviderInterface');
+        $expectedProvider = $this->createCommentsProviderMock();
         $renderer = $this->createCommentsRenderer(
             array(
                 'foo' => $expectedProvider,
-                'bar' => $this->getMock('EzSystems\\CommentsBundle\\Comments\\ProviderInterface'),
+                'bar' => $this->createCommentsProviderMock(),
             )
         );
         $this->assertSame($expectedProvider, $renderer->getDefaultProvider());
@@ -91,7 +93,7 @@ class CommentsRendererTest extends PHPUnit_Framework_TestCase
     {
         $renderer = $this->createCommentsRenderer();
         $this->assertEmpty($renderer->getAllProviders());
-        $provider = $this->getMock('EzSystems\\CommentsBundle\\Comments\\ProviderInterface');
+        $provider = $this->createCommentsProviderMock();
         $this->assertFalse($renderer->hasProvider('foo'));
         $renderer->addProvider($provider, 'foo');
         $this->assertTrue($renderer->hasProvider('foo'));
@@ -105,17 +107,17 @@ class CommentsRendererTest extends PHPUnit_Framework_TestCase
     {
         $renderer = $this->createCommentsRenderer();
         $this->assertEmpty($renderer->getAllProviders());
-        $provider = $this->getMock('EzSystems\\CommentsBundle\\Comments\\ProviderInterface');
+        $provider = $this->createCommentsProviderMock();
         $renderer->addProvider($provider, 'foo');
         $renderer->getProvider('bar');
     }
 
     public function testRender()
     {
-        $fooProvider = $this->getMock('EzSystems\\CommentsBundle\\Comments\\ProviderInterface');
+        $fooProvider = $this->createCommentsProviderMock();
         $providers = array(
             'foo' => $fooProvider,
-            'bar' => $this->getMock('EzSystems\\CommentsBundle\\Comments\\ProviderInterface'),
+            'bar' => $this->createCommentsProviderMock(),
         );
         $defaultRenderer = 'foo';
         $renderer = $this->createCommentsRenderer($providers, $defaultRenderer);
@@ -134,10 +136,10 @@ class CommentsRendererTest extends PHPUnit_Framework_TestCase
 
     public function testRenderForContent()
     {
-        $fooProvider = $this->getMock('EzSystems\\CommentsBundle\\Comments\\ProviderInterface');
+        $fooProvider = $this->createCommentsProviderMock();
         $providers = array(
             'foo' => $fooProvider,
-            'bar' => $this->getMock('EzSystems\\CommentsBundle\\Comments\\ProviderInterface'),
+            'bar' => $this->createCommentsProviderMock(),
         );
         $defaultProvider = 'foo';
         $renderer = $this->createCommentsRenderer($providers, $defaultProvider);
@@ -157,10 +159,10 @@ class CommentsRendererTest extends PHPUnit_Framework_TestCase
 
     public function testRenderForContentDisabled()
     {
-        $fooProvider = $this->getMock('EzSystems\\CommentsBundle\\Comments\\ProviderInterface');
+        $fooProvider = $this->createCommentsProviderMock();
         $providers = array(
             'foo' => $fooProvider,
-            'bar' => $this->getMock('EzSystems\\CommentsBundle\\Comments\\ProviderInterface'),
+            'bar' => $this->createCommentsProviderMock(),
         );
         $defaultProvider = 'foo';
         $renderer = $this->createCommentsRenderer($providers, $defaultProvider);
@@ -181,8 +183,8 @@ class CommentsRendererTest extends PHPUnit_Framework_TestCase
 
     public function testRenderForContentConfiguredProvider()
     {
-        $defaultProvider = $this->getMock('EzSystems\\CommentsBundle\\Comments\\ProviderInterface');
-        $barProvider = $this->getMock('EzSystems\\CommentsBundle\\Comments\\ProviderInterface');
+        $defaultProvider = $this->createCommentsProviderMock();
+        $barProvider = $this->createCommentsProviderMock();
         $renderer = $this->createCommentsRenderer(['foo' => $defaultProvider, 'bar' => $barProvider], 'foo');
 
         $contentInfo = new ContentInfo();
@@ -265,5 +267,10 @@ class CommentsRendererTest extends PHPUnit_Framework_TestCase
             $providers,
             $defaultProvider
         );
+    }
+
+    protected function createCommentsProviderMock()
+    {
+        return $this->createMock(CommentsProviderInterface::class);
     }
 }
