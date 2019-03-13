@@ -8,6 +8,10 @@
 
 CommentsBundle is an versatile bundle for eZ Platform *(v6 for eZ Platform and v5 for eZ Publish Platform 5.x)* making commenting easy.
 
+## Install
+1. Run: `composer require ezsystems/comments-bundle:^6.0`
+2. Add `new EzSystems\CommentsBundle\EzSystemsCommentsBundle()` to acive prod bundles in `app/AppKernel.php`.
+
 ## Features
 
 ### Comments abstraction 
