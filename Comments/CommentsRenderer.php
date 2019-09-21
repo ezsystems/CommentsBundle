@@ -59,7 +59,7 @@ class CommentsRenderer implements ProviderInterface, ContentAuthorizerInterface
         MatcherFactoryInterface $matcherFactory,
         ConfigResolverInterface $configResolver,
         ContentService $contentService,
-        array $providers = array(),
+        array $providers = [],
         $defaultProvider = null
     ) {
         $this->matcherFactory = $matcherFactory;
@@ -91,7 +91,7 @@ class CommentsRenderer implements ProviderInterface, ContentAuthorizerInterface
     /**
      * Returns the label of the default provider.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getDefaultProviderLabel()
     {
@@ -173,7 +173,7 @@ class CommentsRenderer implements ProviderInterface, ContentAuthorizerInterface
      *
      * @return string
      */
-    public function render(Request $request, array $options = array())
+    public function render(Request $request, array $options = [])
     {
         $provider = isset($options['provider']) ? $this->getProvider($options['provider']) : $this->getDefaultProvider();
         unset($options['provider']);
@@ -191,7 +191,7 @@ class CommentsRenderer implements ProviderInterface, ContentAuthorizerInterface
      *
      * @return mixed
      */
-    public function renderForContent(ContentInfo $contentInfo, Request $request, array $options = array())
+    public function renderForContent(ContentInfo $contentInfo, Request $request, array $options = [])
     {
         $commentsConfig = $this->getCommentsConfig($contentInfo);
         if (isset($commentsConfig['enabled']) && $commentsConfig['enabled'] === false) {

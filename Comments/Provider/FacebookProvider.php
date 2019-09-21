@@ -92,17 +92,17 @@ class FacebookProvider extends TemplateBasedProvider
      *
      * @return string
      */
-    public function render(Request $request, array $options = array())
+    public function render(Request $request, array $options = [])
     {
         return $this->doRender(
-            $options + array(
+            $options + [
                 'app_id' => $this->appId,
                 'width' => $this->defaultWidth,
                 'num_posts' => $this->defaultNumPosts,
                 'color_scheme' => $this->defaultColorScheme,
                 'include_sdk' => $this->defaultIncludeSDK,
                 'url' => $request->getSchemeAndHttpHost() . $request->attributes->get('semanticPathinfo', $request->getPathInfo()),
-            )
+            ]
         );
     }
 
@@ -116,19 +116,19 @@ class FacebookProvider extends TemplateBasedProvider
      *
      * @return string
      */
-    public function renderForContent(ContentInfo $contentInfo, Request $request, array $options = array())
+    public function renderForContent(ContentInfo $contentInfo, Request $request, array $options = [])
     {
         $foo = $this->locationService->loadLocation($contentInfo->mainLocationId);
 
         return $this->doRender(
-            $options + array(
+            $options + [
                 'app_id' => $this->appId,
                 'width' => $this->defaultWidth,
                 'num_posts' => $this->defaultNumPosts,
                 'color_scheme' => $this->defaultColorScheme,
                 'include_sdk' => $this->defaultIncludeSDK,
-                'url' => $this->router->generate($foo, array(), true),
-            )
+                'url' => $this->router->generate($foo, [], true),
+            ]
         );
     }
 }

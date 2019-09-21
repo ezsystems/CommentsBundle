@@ -44,7 +44,7 @@ class ContentMatcherFactory extends BaseFactory
     public function match(View $view)
     {
         if ($this->alwaysMatch === true) {
-            return array('enabled' => true);
+            return ['enabled' => true];
         }
 
         return parent::match($view);

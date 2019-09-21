@@ -22,7 +22,7 @@ class ConfigurationMapper implements HookableConfigurationMapperInterface
             $contextualizer->setContextualParameter('default_provider', $currentScope, $scopeSettings['default_provider']);
         }
         if (isset($scopeSettings['content_comments'])) {
-            $scopeSettings['content_comments'] = array('comments' => $scopeSettings['content_comments']);
+            $scopeSettings['content_comments'] = ['comments' => $scopeSettings['content_comments']];
         }
 
         // Disqus

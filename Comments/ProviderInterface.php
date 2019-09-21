@@ -27,7 +27,7 @@ interface ProviderInterface
      *
      * @return string
      */
-    public function render(Request $request, array $options = array());
+    public function render(Request $request, array $options = []);
 
     /**
      * Renders the comments list for a given content.
@@ -39,5 +39,5 @@ interface ProviderInterface
      *
      * @return mixed
      */
-    public function renderForContent(ContentInfo $contentInfo, Request $request, array $options = array());
+    public function renderForContent(ContentInfo $contentInfo, Request $request, array $options = []);
 }

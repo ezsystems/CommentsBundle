@@ -7,7 +7,6 @@ return PhpCsFixer\Config::create()
             '@Symfony' => true,
             '@Symfony:risky' => true,
             'concat_space' => ['spacing' => 'one'],
-            'array_syntax' => false,
             'simplified_null_return' => false,
             'phpdoc_align' => false,
             'phpdoc_separation' => false,
@@ -20,6 +19,11 @@ return PhpCsFixer\Config::create()
             'space_after_semicolon' => false,
             'yoda_style' => false,
             'no_break_comment' => false,
+
+            // 2019 style updates with cs-fixer 2.15, all above are in sync with kernel
+            '@PHPUnit57Migration:risky' => true,
+            'array_syntax' => ['syntax' => 'short'],
+            'static_lambda' => true,
         ]
     )
     ->setRiskyAllowed(true)

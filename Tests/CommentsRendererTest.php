@@ -41,15 +41,15 @@ class CommentsRendererTest extends TestCase
         $this->contentServiceMock
             ->expects($this->any())
             ->method('loadContentByContentInfo')
-            ->will($this->returnValue(new Content()));
+            ->willReturn(new Content());
     }
 
     public function testConstruct()
     {
-        $providers = array(
+        $providers = [
             'foo' => $this->createCommentsProviderMock(),
             'bar' => $this->createCommentsProviderMock(),
-        );
+        ];
         $defaultRenderer = 'foo';
         $renderer = $this->createCommentsRenderer($providers, $defaultRenderer);
         $this->assertSame($providers, $renderer->getAllProviders());
@@ -68,10 +68,10 @@ class CommentsRendererTest extends TestCase
     {
         $expectedProvider = $this->createCommentsProviderMock();
         $renderer = $this->createCommentsRenderer(
-            array(
+            [
                 'foo' => $this->createCommentsProviderMock(),
                 'bar' => $expectedProvider,
-            ),
+            ],
             'bar'
         );
         $this->assertSame($expectedProvider, $renderer->getDefaultProvider());
@@ -81,10 +81,10 @@ class CommentsRendererTest extends TestCase
     {
         $expectedProvider = $this->createCommentsProviderMock();
         $renderer = $this->createCommentsRenderer(
-            array(
+            [
                 'foo' => $expectedProvider,
                 'bar' => $this->createCommentsProviderMock(),
-            )
+            ]
         );
         $this->assertSame($expectedProvider, $renderer->getDefaultProvider());
     }
@@ -100,11 +100,10 @@ class CommentsRendererTest extends TestCase
         $this->assertSame($provider, $renderer->getProvider('foo'));
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testGetInvalidProvider()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $renderer = $this->createCommentsRenderer();
         $this->assertEmpty($renderer->getAllProviders());
         $provider = $this->createCommentsProviderMock();
@@ -115,21 +114,21 @@ class CommentsRendererTest extends TestCase
     public function testRender()
     {
         $fooProvider = $this->createCommentsProviderMock();
-        $providers = array(
+        $providers = [
             'foo' => $fooProvider,
             'bar' => $this->createCommentsProviderMock(),
-        );
+        ];
         $defaultRenderer = 'foo';
         $renderer = $this->createCommentsRenderer($providers, $defaultRenderer);
 
         $request = new Request();
-        $options = array('some' => 'thing');
+        $options = ['some' => 'thing'];
         $commentsList = 'I am a comment list';
         $fooProvider
             ->expects($this->once())
             ->method('render')
             ->with($request, $options)
-            ->will($this->returnValue($commentsList));
+            ->willReturn($commentsList);
 
         $this->assertSame($commentsList, $renderer->render($request, $options));
     }
@@ -137,22 +136,22 @@ class CommentsRendererTest extends TestCase
     public function testRenderForContent()
     {
         $fooProvider = $this->createCommentsProviderMock();
-        $providers = array(
+        $providers = [
             'foo' => $fooProvider,
             'bar' => $this->createCommentsProviderMock(),
-        );
+        ];
         $defaultProvider = 'foo';
         $renderer = $this->createCommentsRenderer($providers, $defaultProvider);
 
         $contentInfo = new ContentInfo();
         $request = new Request();
-        $options = array('some' => 'thing');
+        $options = ['some' => 'thing'];
         $commentsList = 'I am a comment list for a content';
         $fooProvider
             ->expects($this->once())
             ->method('renderForContent')
             ->with($contentInfo, $request, $options)
-            ->will($this->returnValue($commentsList));
+            ->willReturn($commentsList);
 
         $this->assertSame($commentsList, $renderer->renderForContent($contentInfo, $request, $options));
     }
@@ -160,15 +159,15 @@ class CommentsRendererTest extends TestCase
     public function testRenderForContentDisabled()
     {
         $fooProvider = $this->createCommentsProviderMock();
-        $providers = array(
+        $providers = [
             'foo' => $fooProvider,
             'bar' => $this->createCommentsProviderMock(),
-        );
+        ];
         $defaultProvider = 'foo';
         $renderer = $this->createCommentsRenderer($providers, $defaultProvider);
 
         $request = new Request();
-        $options = array('some' => 'thing');
+        $options = ['some' => 'thing'];
         $fooProvider
             ->expects($this->never())
             ->method('renderForContent');
@@ -176,7 +175,7 @@ class CommentsRendererTest extends TestCase
         $this->matcherFactoryMock
             ->expects($this->once())
             ->method('match')
-            ->will($this->returnValue(array('enabled' => false)));
+            ->willReturn(['enabled' => false]);
 
         $this->assertNull($renderer->renderForContent(new ContentInfo(), $request, $options));
     }
@@ -192,14 +191,12 @@ class CommentsRendererTest extends TestCase
         $this->matcherFactoryMock
             ->expects($this->once())
             ->method('match')
-            ->will(
-                $this->returnValue(
-                    array(
+            ->willReturn(
+                    [
                         'enabled' => true,
                         'provider' => 'bar',
-                        'options' => array('foo' => 'This should be overridden', 'some_configured_option' => 'some_value'),
-                    )
-                )
+                        'options' => ['foo' => 'This should be overridden', 'some_configured_option' => 'some_value'],
+                    ]
             );
 
         // Default provider should not be called
@@ -209,19 +206,19 @@ class CommentsRendererTest extends TestCase
 
         $request = new Request();
         $commentsList = 'I am a comment list from bar comments provider.';
-        $explicitOptions = array('some' => 'thing', 'foo' => 'bar');
+        $explicitOptions = ['some' => 'thing', 'foo' => 'bar'];
         // $expectedOptions are a mix between explicitly passed options and configured options.
         // Explicit options have precedence.
-        $expectedOptions = array(
+        $expectedOptions = [
             'some' => 'thing',
             'foo' => 'bar',
             'some_configured_option' => 'some_value',
-        );
+        ];
         $barProvider
             ->expects($this->once())
             ->method('renderForContent')
             ->with($contentInfo, $request, $expectedOptions)
-            ->will($this->returnValue($commentsList));
+            ->willReturn($commentsList);
 
         $this->assertSame($commentsList, $renderer->renderForContent($contentInfo, $request, $explicitOptions));
     }
@@ -234,7 +231,7 @@ class CommentsRendererTest extends TestCase
         $this->matcherFactoryMock
             ->expects($this->once())
             ->method('match')
-            ->will($this->returnValue(array('enabled' => true)));
+            ->willReturn(['enabled' => true]);
 
         $this->assertTrue($renderer->canCommentContent($contentInfo));
     }
@@ -247,7 +244,7 @@ class CommentsRendererTest extends TestCase
         $this->matcherFactoryMock
             ->expects($this->once())
             ->method('match')
-            ->will($this->returnValue(array('enabled' => false)));
+            ->willReturn(['enabled' => false]);
 
         $this->assertFalse($renderer->canCommentContent($contentInfo));
     }

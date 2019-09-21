@@ -43,24 +43,24 @@ class Configuration extends SiteAccessConfiguration
             ->arrayNode('content_comments')
                 ->info('Rules for comments on Content objects. If none provided, commenting will be allowed for any type of content.')
                 ->example(
-                    array(
-                        'public_articles' => array(
+                    [
+                        'public_articles' => [
                             'enabled' => true,
                             'provider' => 'facebook',
-                            'match' => array(
-                                'Identifier\\ContentType' => array('article', 'blog_post'),
+                            'match' => [
+                                'Identifier\\ContentType' => ['article', 'blog_post'],
                                 'Identifier\\Section' => 'standard',
-                            ),
-                        ),
-                        'private_articles' => array(
+                            ],
+                        ],
+                        'private_articles' => [
                             'enabled' => true,
                             'provider' => 'disqus',
-                            'match' => array(
-                                'Identifier\\ContentType' => array('article', 'blog_post'),
+                            'match' => [
+                                'Identifier\\ContentType' => ['article', 'blog_post'],
                                 'Identifier\\Section' => 'private',
-                            ),
-                        ),
-                    )
+                            ],
+                        ],
+                    ]
                 )
                 ->useAttributeAsKey('my_comment_ruleset')
                 ->prototype('array')
@@ -74,7 +74,7 @@ class Configuration extends SiteAccessConfiguration
                         ->end()
                         ->arrayNode('match')
                             ->info('Condition matchers configuration. You can use the same matchers as for selecting content view templates.')
-                            ->example(array('Identifier\\ContentType' => array('article', 'blog_post')))
+                            ->example(['Identifier\\ContentType' => ['article', 'blog_post']])
                             ->useAttributeAsKey('matcher')
                             ->prototype('variable')->end()
                         ->end()
@@ -103,7 +103,7 @@ class Configuration extends SiteAccessConfiguration
                     ->scalarNode('app_id')->isRequired()->info('Facebook application ID')->end()
                     ->scalarNode('width')->info('Width for the comments box (default is 470)')->end()
                     ->scalarNode('num_posts')->info('Number of comments to display (default is 10)')->end()
-                    ->enumNode('color_scheme')->info('Color scheme to use (can be "light" or "dark"). Default is "light"')->values(array('light', 'dark'))->end()
+                    ->enumNode('color_scheme')->info('Color scheme to use (can be "light" or "dark"). Default is "light"')->values(['light', 'dark'])->end()
                     ->booleanNode('include_sdk')->info('Whether to include Facebook JS SDK with the comments rendering. If set to false, you must include it on your own. Default is true.')->end()
                     ->scalarNode('template')->info('Template to use, overriding the built-in one.')->end()
                 ->end()

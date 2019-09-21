@@ -29,22 +29,22 @@ class EzSystemsCommentsExtensionTest extends AbstractExtensionTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->availableSiteAccesses = array('sa1', 'sa2', 'sa3');
+        $this->availableSiteAccesses = ['sa1', 'sa2', 'sa3'];
         ConfigurationProcessor::setAvailableSiteAccesses($this->availableSiteAccesses);
-        $this->groupsBySiteAccess = array(
-            'sa2' => array('sa_group'),
-            'sa3' => array('sa_group'),
-        );
+        $this->groupsBySiteAccess = [
+            'sa2' => ['sa_group'],
+            'sa3' => ['sa_group'],
+        ];
         ConfigurationProcessor::setGroupsBySiteAccess($this->groupsBySiteAccess);
         $this->configResolver = new ConfigResolver($this->groupsBySiteAccess, 'ezsettings');
     }
 
     protected function getContainerExtensions()
     {
-        return array(new EzSystemsCommentsExtension());
+        return [new EzSystemsCommentsExtension()];
     }
 
-    protected function load(array $configurationValues = array())
+    protected function load(array $configurationValues = [])
     {
         parent::load($configurationValues);
         $this->configResolver->setContainer($this->container);
@@ -62,7 +62,7 @@ class EzSystemsCommentsExtensionTest extends AbstractExtensionTestCase
 
         foreach ($this->availableSiteAccesses as $sa) {
             $this->assertSame('no_comments', $this->configResolver->getParameter('default_provider', 'ez_comments', $sa));
-            $this->assertSame(array(), $this->configResolver->getParameter('content_comments', 'ez_comments', $sa));
+            $this->assertSame([], $this->configResolver->getParameter('content_comments', 'ez_comments', $sa));
             $this->assertSame('EzSystemsCommentsBundle::disqus.html.twig', $this->configResolver->getParameter('disqus.default_template', 'ez_comments', $sa));
             $this->assertSame('EzSystemsCommentsBundle::facebook.html.twig', $this->configResolver->getParameter('facebook.default_template', 'ez_comments', $sa));
             $this->assertSame('light', $this->configResolver->getParameter('facebook.color_scheme', 'ez_comments', $sa));
@@ -74,19 +74,19 @@ class EzSystemsCommentsExtensionTest extends AbstractExtensionTestCase
     {
         $providerSa1 = 'disqus';
         $providerSaGroup = 'facebook';
-        $config = array(
-            'system' => array(
-                'sa1' => array(
+        $config = [
+            'system' => [
+                'sa1' => [
                     'default_provider' => $providerSa1,
-                ),
-                'sa2' => array(
-                    'disqus' => array('shortname' => 'foo'),
-                ),
-                'sa_group' => array(
+                ],
+                'sa2' => [
+                    'disqus' => ['shortname' => 'foo'],
+                ],
+                'sa_group' => [
                     'default_provider' => $providerSaGroup,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
         $this->load($config);
 
         $this->assertSame($providerSa1, $this->configResolver->getParameter('default_provider', 'ez_comments', 'sa1'));
@@ -97,133 +97,133 @@ class EzSystemsCommentsExtensionTest extends AbstractExtensionTestCase
     public function testContentComments()
     {
         $providerSa1 = 'disqus';
-        $contentCommentsSa1 = array(
-            'public_articles' => array(
+        $contentCommentsSa1 = [
+            'public_articles' => [
                 'enabled' => true,
                 'provider' => 'facebook',
-                'match' => array(
-                    'Identifier\\ContentType' => array('article', 'blog_post'),
+                'match' => [
+                    'Identifier\\ContentType' => ['article', 'blog_post'],
                     'Identifier\\Section' => 'standard',
-                ),
-                'options' => array('foo' => 'bar'),
-            ),
-            'private_articles' => array(
+                ],
+                'options' => ['foo' => 'bar'],
+            ],
+            'private_articles' => [
                 'enabled' => true,
                 'provider' => 'disqus',
-                'match' => array(
-                    'Identifier\\ContentType' => array('article', 'blog_post'),
+                'match' => [
+                    'Identifier\\ContentType' => ['article', 'blog_post'],
                     'Identifier\\Section' => 'private',
-                ),
-                'options' => array('width' => 470),
-            ),
-        );
-        $expectedContentCommentsSa1 = array('comments' => $contentCommentsSa1);
+                ],
+                'options' => ['width' => 470],
+            ],
+        ];
+        $expectedContentCommentsSa1 = ['comments' => $contentCommentsSa1];
 
         $providerSaGroup = 'facebook';
-        $contentCommentsSaGroup = array(
-            'nights_watch_comments' => array(
+        $contentCommentsSaGroup = [
+            'nights_watch_comments' => [
                 'enabled' => false,
                 'provider' => 'raven',
-                'match' => array(
-                    'Identifier\\ContentType' => array('men_request', 'complaints'),
-                ),
-            ),
-            'cersei_comments' => array(
+                'match' => [
+                    'Identifier\\ContentType' => ['men_request', 'complaints'],
+                ],
+            ],
+            'cersei_comments' => [
                 'enabled' => true,
                 'provider' => 'i_dont_care',
-                'match' => array(
-                    'Identifier\\ContentType' => array('more_wine', 'more_blood'),
+                'match' => [
+                    'Identifier\\ContentType' => ['more_wine', 'more_blood'],
                     'Identifier\\Section' => 'private',
-                ),
-            ),
-        );
-        $expectedCommentsSaGroup = array(
-            'comments' => array(
-                'nights_watch_comments' => array(
+                ],
+            ],
+        ];
+        $expectedCommentsSaGroup = [
+            'comments' => [
+                'nights_watch_comments' => [
                     'enabled' => false,
                     'provider' => 'raven',
-                    'match' => array(
-                        'Identifier\\ContentType' => array('men_request', 'complaints'),
-                    ),
-                    'options' => array(),
-                ),
-                'cersei_comments' => array(
+                    'match' => [
+                        'Identifier\\ContentType' => ['men_request', 'complaints'],
+                    ],
+                    'options' => [],
+                ],
+                'cersei_comments' => [
                     'enabled' => true,
                     'provider' => 'i_dont_care',
-                    'match' => array(
-                        'Identifier\\ContentType' => array('more_wine', 'more_blood'),
+                    'match' => [
+                        'Identifier\\ContentType' => ['more_wine', 'more_blood'],
                         'Identifier\\Section' => 'private',
-                    ),
-                    'options' => array(),
-                ),
-            ),
-        );
+                    ],
+                    'options' => [],
+                ],
+            ],
+        ];
 
         $providerSa2 = 'disqus';
 
-        $contentCommentsSa3 = array(
-            'melisandre_comments' => array(
+        $contentCommentsSa3 = [
+            'melisandre_comments' => [
                 'enabled' => true,
                 'provider' => 'stanis_baratheon',
-                'match' => array(
+                'match' => [
                     'God\Type' => 'fire_fire_FIRE',
-                ),
-            ),
-            'cersei_comments' => array(
+                ],
+            ],
+            'cersei_comments' => [
                 'enabled' => false,
-            ),
-            'nights_watch_comments' => array(
+            ],
+            'nights_watch_comments' => [
                 'enabled' => true,
                 'provider' => 'raven',
-                'match' => array(
-                    'Identifier\\ContentType' => array('men_request', 'complaints'),
-                ),
-            ),
-        );
-        $expectedContentCommentsSa3 = array(
-            'comments' => array(
-                'nights_watch_comments' => array(
+                'match' => [
+                    'Identifier\\ContentType' => ['men_request', 'complaints'],
+                ],
+            ],
+        ];
+        $expectedContentCommentsSa3 = [
+            'comments' => [
+                'nights_watch_comments' => [
                     'enabled' => true,
                     'provider' => 'raven',
-                    'match' => array(
-                        'Identifier\\ContentType' => array('men_request', 'complaints'),
-                    ),
-                    'options' => array(),
-                ),
-                'cersei_comments' => array(
+                    'match' => [
+                        'Identifier\\ContentType' => ['men_request', 'complaints'],
+                    ],
+                    'options' => [],
+                ],
+                'cersei_comments' => [
                     'enabled' => false,
-                    'match' => array(),
-                    'options' => array(),
-                ),
-                'melisandre_comments' => array(
+                    'match' => [],
+                    'options' => [],
+                ],
+                'melisandre_comments' => [
                     'enabled' => true,
                     'provider' => 'stanis_baratheon',
-                    'match' => array(
+                    'match' => [
                         'God\\Type' => 'fire_fire_FIRE',
-                    ),
-                    'options' => array(),
-                ),
-            ),
-        );
+                    ],
+                    'options' => [],
+                ],
+            ],
+        ];
 
-        $config = array(
-            'system' => array(
-                'sa1' => array(
+        $config = [
+            'system' => [
+                'sa1' => [
                     'default_provider' => $providerSa1,
                     'content_comments' => $contentCommentsSa1,
-                ),
-                'sa2' => array(
+                ],
+                'sa2' => [
                     'default_provider' => $providerSa2,
-                ),
-                'sa3' => array(
+                ],
+                'sa3' => [
                     'content_comments' => $contentCommentsSa3,
-                ),
-                'sa_group' => array(
+                ],
+                'sa_group' => [
                     'default_provider' => $providerSaGroup,
                     'content_comments' => $contentCommentsSaGroup,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
         $this->load($config);
 
         $this->assertSame($providerSa1, $this->configResolver->getParameter('default_provider', 'ez_comments', 'sa1'));
@@ -242,23 +242,23 @@ class EzSystemsCommentsExtensionTest extends AbstractExtensionTestCase
         $shortnameSaGroup = 'kings_landing';
         $templateSa1 = 'the_wall.html.twig';
         $defaultTemplate = 'EzSystemsCommentsBundle::disqus.html.twig';
-        $config = array(
-            'system' => array(
-                'sa1' => array(
+        $config = [
+            'system' => [
+                'sa1' => [
                     'default_provider' => 'disqus',
-                    'disqus' => array(
+                    'disqus' => [
                         'shortname' => $shortnameSa1,
                         'template' => $templateSa1,
-                    ),
-                ),
-                'sa_group' => array(
+                    ],
+                ],
+                'sa_group' => [
                     'default_provider' => 'disqus',
-                    'disqus' => array(
+                    'disqus' => [
                         'shortname' => $shortnameSaGroup,
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
         $this->load($config);
 
         $this->assertSame('disqus', $this->configResolver->getParameter('default_provider', 'ez_comments', 'sa1'));
@@ -290,38 +290,38 @@ class EzSystemsCommentsExtensionTest extends AbstractExtensionTestCase
         $templateSa1 = 'tyron_half_face_book.html.twig';
         $templateSa2 = 'cerseis_facebook.html.twig';
         $widthSaGroup = 570;
-        $config = array(
-            'system' => array(
-                'sa1' => array(
+        $config = [
+            'system' => [
+                'sa1' => [
                     'default_provider' => 'facebook',
-                    'facebook' => array(
+                    'facebook' => [
                         'app_id' => $appIdSa1,
                         'color_scheme' => $colorSchemeSa1,
                         'include_sdk' => $includeSdkSa1,
                         'template' => $templateSa1,
-                    ),
-                ),
-                'sa2' => array(
+                    ],
+                ],
+                'sa2' => [
                     'default_provider' => 'disqus',
-                    'facebook' => array(
+                    'facebook' => [
                         'app_id' => $appIdSa2,
                         'num_posts' => $numPostsSa2,
                         'include_sdk' => $includeSdkSa2,
                         'template' => $templateSa2,
                         'width' => $widthSa2,
-                    ),
-                ),
-                'sa_group' => array(
+                    ],
+                ],
+                'sa_group' => [
                     'default_provider' => 'facebook',
-                    'facebook' => array(
+                    'facebook' => [
                         'app_id' => $appIdSaGroup,
                         'include_sdk' => $includeSdkSaGroup,
                         'num_posts' => $numPostsSaGroup,
                         'width' => $widthSaGroup,
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
         $this->load($config);
 
         $this->assertSame('facebook', $this->configResolver->getParameter('default_provider', 'ez_comments', 'sa1'));

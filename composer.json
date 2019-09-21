@@ -1,6 +1,6 @@
 {
     "name": "ezsystems/comments-bundle",
-    "description": "Commenting system for eZ Publish",
+    "description": "Commenting system for eZ Platform",
     "license": "GPL-2.0",
     "type": "ezplatform-bundle",
     "authors": [
@@ -14,11 +14,11 @@
         }
     ],
     "require": {
-        "ezsystems/ezpublish-kernel": "~6.0@dev || ^7.0@dev"
+        "ezsystems/ezpublish-kernel": "~6.7.0 || ~6.13.0 || ~7.5.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^5.7|^6.0",
-        "friendsofphp/php-cs-fixer": "~2.7.1",
+        "friendsofphp/php-cs-fixer": "v2.15.3",
         "matthiasnoback/symfony-dependency-injection-test": "~1.0|~2.0"
     },
     "suggest": {
@@ -29,7 +29,12 @@
     },
     "target-dir": "EzSystems/CommentsBundle",
     "scripts": {
-        "fix-cs": "@php ./vendor/bin/php-cs-fixer fix -v --show-progress=estimating"
+        "fix-cs": "@php ./vendor/bin/php-cs-fixer fix -v --show-progress=estimating",
+        "test": "@php ./vendor/bin/phpunit"
+    },
+    "scripts-descriptions": {
+        "fix-cs": "Fix Coding standard issues in current checkout.",
+        "test": "Run all unit tests"
     },
     "extra": {
         "branch-alias": {

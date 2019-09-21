@@ -25,7 +25,7 @@ class NullProvider implements ProviderInterface
      *
      * @return string
      */
-    public function render(Request $request, array $options = array())
+    public function render(Request $request, array $options = [])
     {
         return;
     }
@@ -40,7 +40,7 @@ class NullProvider implements ProviderInterface
      *
      * @return mixed
      */
-    public function renderForContent(ContentInfo $contentInfo, Request $request, array $options = array())
+    public function renderForContent(ContentInfo $contentInfo, Request $request, array $options = [])
     {
         return;
     }

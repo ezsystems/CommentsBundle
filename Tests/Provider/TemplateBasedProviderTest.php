@@ -76,7 +76,7 @@ abstract class TemplateBasedProviderTest extends TestCase
      * @param array $options Minimal options the provider is supposed to inject into its template
      * @param array $customOptions Custom options injected by higher call (e.g. from the template helper)
      */
-    public function testRender(Request $request, array $options, array $customOptions = array())
+    public function testRender(Request $request, array $options, array $customOptions = [])
     {
         $renderedComments = "Guess what? I'm a comments thread!";
         $defaultTemplate = $this->getDefaultTemplate();
@@ -85,7 +85,7 @@ abstract class TemplateBasedProviderTest extends TestCase
             ->expects($this->once())
             ->method('render')
             ->with($defaultTemplate, $customOptions + $options)
-            ->will($this->returnValue($renderedComments));
+            ->willReturn($renderedComments);
 
         $this->assertSame(
             $renderedComments,
@@ -102,7 +102,7 @@ abstract class TemplateBasedProviderTest extends TestCase
      * @param array $options Minimal options the provider is supposed to inject into its template
      * @param array $customOptions Custom options injected by higher call (e.g. from the template helper)
      */
-    public function testRenderTemplateOverride(Request $request, array $options, array $customOptions = array())
+    public function testRenderTemplateOverride(Request $request, array $options, array $customOptions = [])
     {
         $renderedComments = "Guess what? I'm a comments thread!";
         $template = 'override.html.twig';
@@ -111,13 +111,13 @@ abstract class TemplateBasedProviderTest extends TestCase
             ->expects($this->once())
             ->method('render')
             ->with($template, $customOptions + $options)
-            ->will($this->returnValue($renderedComments));
+            ->willReturn($renderedComments);
 
         $this->assertSame(
             $renderedComments,
             $this
                 ->getCommentsProvider($this->templateEngine, $template)
-                ->render($request, $customOptions + array('template' => $template))
+                ->render($request, $customOptions + ['template' => $template])
         );
     }
 
@@ -125,18 +125,18 @@ abstract class TemplateBasedProviderTest extends TestCase
     {
         $request1 = Request::create('/foo/bar');
         $options1 = $this->getExpectedOptions($request1);
-        $customOptions1 = array('category' => '123456789');
+        $customOptions1 = ['category' => '123456789'];
 
-        $request2 = Request::create('/mySiteAccess/some/thing', 'GET', array('foo' => 'bar'));
+        $request2 = Request::create('/mySiteAccess/some/thing', 'GET', ['foo' => 'bar']);
         $request2->attributes->set('siteaccess', new SiteAccess('mySiteAccess', 'uri'));
         $request2->attributes->set('semanticPathinfo', '/some/thing');
         $options2 = $this->getExpectedOptions($request2);
-        $customOptions2 = array('category' => '123456789', 'lonely_var' => "I'm a poooooor lonesome cow-boy!");
+        $customOptions2 = ['category' => '123456789', 'lonely_var' => "I'm a poooooor lonesome cow-boy!"];
 
-        return array(
-            array($request1, $options1, $customOptions1),
-            array($request2, $options2, $customOptions2),
-        );
+        return [
+            [$request1, $options1, $customOptions1],
+            [$request2, $options2, $customOptions2],
+        ];
     }
 
     /**
@@ -158,7 +158,7 @@ abstract class TemplateBasedProviderTest extends TestCase
      * @param array $options Minimal options the provider is supposed to inject into its template
      * @param array $customOptions Custom options injected by higher call (e.g. from the template helper)
      */
-    public function testRenderForContent(ContentInfo $contentInfo, Request $request, array $options, array $customOptions = array())
+    public function testRenderForContent(ContentInfo $contentInfo, Request $request, array $options, array $customOptions = [])
     {
         $renderedComments = "I'm a comments thread for $contentInfo->id!";
         $defaultTemplate = $this->getDefaultTemplate();
@@ -167,7 +167,7 @@ abstract class TemplateBasedProviderTest extends TestCase
             ->expects($this->once())
             ->method('render')
             ->with($defaultTemplate, $customOptions + $options)
-            ->will($this->returnValue($renderedComments));
+            ->willReturn($renderedComments);
 
         $this->assertSame(
             $renderedComments,
@@ -185,7 +185,7 @@ abstract class TemplateBasedProviderTest extends TestCase
      * @param array $options
      * @param array $customOptions
      */
-    public function testRenderForContentTemplateOverride(ContentInfo $contentInfo, Request $request, array $options, array $customOptions = array())
+    public function testRenderForContentTemplateOverride(ContentInfo $contentInfo, Request $request, array $options, array $customOptions = [])
     {
         $renderedComments = "I'm a comments thread for $contentInfo->id!";
         $template = 'override.html.twig';
@@ -194,45 +194,45 @@ abstract class TemplateBasedProviderTest extends TestCase
             ->expects($this->once())
             ->method('render')
             ->with($template, $customOptions + $options)
-            ->will($this->returnValue($renderedComments));
+            ->willReturn($renderedComments);
 
         $this->assertSame(
             $renderedComments,
             $this
                 ->getCommentsProvider($this->templateEngine, $template)
-                ->renderForContent($contentInfo, $request, $customOptions + array('template' => $template))
+                ->renderForContent($contentInfo, $request, $customOptions + ['template' => $template])
         );
     }
 
     public function renderForContentTestProvider()
     {
-        $ret = array();
+        $ret = [];
 
-        $contentInfo1 = new ContentInfo(array('id' => 123, 'mainLocationId' => 456, 'name' => 'A developer walks into a bar'));
+        $contentInfo1 = new ContentInfo(['id' => 123, 'mainLocationId' => 456, 'name' => 'A developer walks into a bar']);
         $request1 = Request::create('/foo/bar');
-        $ret[] = array(
+        $ret[] = [
             $contentInfo1,
             $request1,
             $this->getExpectedOptionsForContent($contentInfo1, $request1),
-        );
+        ];
 
-        $contentInfo2 = new ContentInfo(array('id' => 456, 'mainLocationId' => 789, 'name' => 'Again a fake content'));
+        $contentInfo2 = new ContentInfo(['id' => 456, 'mainLocationId' => 789, 'name' => 'Again a fake content']);
         $request2 = Request::create('/test/fake-content');
-        $ret[] = array(
+        $ret[] = [
             $contentInfo2,
             $request2,
             $this->getExpectedOptionsForContent($contentInfo2, $request2),
-            array('category' => '123456789'),
-        );
+            ['category' => '123456789'],
+        ];
 
-        $contentInfo3 = new ContentInfo(array('id' => 789, 'mainLocationId' => 123, 'name' => "It's a kind of Magic"));
-        $request3 = Request::create('/queen/kind-of-magic/(foo)/bar', 'GET', array('some' => 'thing'));
-        $ret[] = array(
+        $contentInfo3 = new ContentInfo(['id' => 789, 'mainLocationId' => 123, 'name' => "It's a kind of Magic"]);
+        $request3 = Request::create('/queen/kind-of-magic/(foo)/bar', 'GET', ['some' => 'thing']);
+        $ret[] = [
             $contentInfo3,
             $request3,
             $this->getExpectedOptionsForContent($contentInfo3, $request3),
-            array('category' => '123456789', 'lonely_var' => "I'm a poooooor lonesome cow-boy!"),
-        );
+            ['category' => '123456789', 'lonely_var' => "I'm a poooooor lonesome cow-boy!"],
+        ];
 
         return $ret;
     }

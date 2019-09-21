@@ -13,7 +13,6 @@ namespace EzSystems\CommentsBundle\Twig\Extension;
 use eZ\Publish\API\Repository\Values\Content\ContentInfo;
 use eZ\Publish\Core\MVC\Symfony\RequestStackAware;
 use EzSystems\CommentsBundle\Comments\ProviderInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Twig_Extension;
 use Twig_SimpleFunction;
 use RuntimeException;
@@ -44,18 +43,18 @@ class CommentsExtension extends Twig_Extension
 
     public function getFunctions()
     {
-        return array(
+        return [
             new Twig_SimpleFunction(
                 'ez_comments_render',
-                array($this, 'render'),
-                array('is_safe' => array('html'))
+                [$this, 'render'],
+                ['is_safe' => ['html']]
             ),
             new Twig_SimpleFunction(
                 'ez_comments_render_content',
-                array($this, 'renderForContent'),
-                array('is_safe' => array('html'))
+                [$this, 'renderForContent'],
+                ['is_safe' => ['html']]
             ),
-        );
+        ];
     }
 
     /**
@@ -68,7 +67,7 @@ class CommentsExtension extends Twig_Extension
      *
      * @return string
      */
-    public function render(array $options = array(), $provider = null)
+    public function render(array $options = [], $provider = null)
     {
         if (isset($provider)) {
             $options['provider'] = $provider;
@@ -93,7 +92,7 @@ class CommentsExtension extends Twig_Extension
      *
      * @throws \RuntimeException
      */
-    public function renderForContent(ContentInfo $contentInfo, array $options = array(), $provider = null)
+    public function renderForContent(ContentInfo $contentInfo, array $options = [], $provider = null)
     {
         if (isset($provider)) {
             $options['provider'] = $provider;

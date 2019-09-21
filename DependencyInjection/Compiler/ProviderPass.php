@@ -40,7 +40,7 @@ class ProviderPass implements CompilerPassInterface
 
                 $commentsRendererDef->addMethodCall(
                     'addProvider',
-                    array(new Reference($id), $attribute['alias'])
+                    [new Reference($id), $attribute['alias']]
                 );
             }
         }

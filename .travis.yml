@@ -1,25 +1,37 @@
-sudo: false
-
+dist: xenial
+sudo: required
 language: php
 
-php:
-    - 5.6
-    - 7.0
-    - 7.1
+cache:
+  directories:
+    - $HOME/.composer/cache/files
 
-# test only master (+ Pull requests)
+matrix:
+  fast_finish: true
+  include:
+    # Skipped as Composer runs out of memory consuming all RAM, can be re added if we drop deps like kernel 7.5 support here in event of opening new branch for v2
+    #- php: "5.6"
+    - php: "7.0"
+    - php: "7.1"
+    - php: "7.2"
+    - name: '7.3 testing and Code Style Check'
+      php: "7.3"
+      env: CHECK_CS=1
+
+# test only master and stable branches (+ Pull requests targeting those)
 branches:
     only:
         - master
+        - /^\d.\d+$/
 
 before_script:
     - phpenv config-rm xdebug.ini
     - echo "memory_limit=-1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
-    - travis_retry composer selfupdate
-    - composer config -g github-oauth.github.com "d0285ed5c8644f30547572ead2ed897431c1fc09"
     - travis_retry composer install --prefer-dist --no-interaction
 
-script: php vendor/bin/phpunit
+script:
+    - php vendor/bin/phpunit
+    - if [ "$CHECK_CS" = "1" ] ; then ./vendor/ezsystems/ezpublish-kernel/bin/.travis/check_code_style.sh; fi
 
 notifications:
     email: false

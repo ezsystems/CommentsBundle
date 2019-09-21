@@ -56,11 +56,11 @@ class DisqusTest extends TemplateBasedProviderTest
      */
     protected function getExpectedOptions(Request $request)
     {
-        return array(
+        return [
             'shortname' => static::SHORTNAME,
             'identifier' => $request->getPathInfo(),
             'count' => false,
-        );
+        ];
     }
 
     /**
@@ -74,11 +74,11 @@ class DisqusTest extends TemplateBasedProviderTest
      */
     protected function getExpectedOptionsForContent(ContentInfo $contentInfo, Request $request)
     {
-        return array(
+        return [
             'shortname' => static::SHORTNAME,
             'identifier' => $contentInfo->id,
             'title' => $contentInfo->name,
             'count' => false,
-        );
+        ];
     }
 }
