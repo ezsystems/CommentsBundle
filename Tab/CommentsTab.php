@@ -12,8 +12,13 @@ use Twig\Environment;
 
 class CommentsTab extends AbstractTab
 {
+    /** @var \EzSystems\CommentsBundle\Comments\ProviderInterface */
     private $commentsRenderer;
+
+    /** @var \Symfony\Component\HttpFoundation\RequestStack */
     private $requestStack;
+
+    /** @var \eZ\Publish\API\Repository\ContentService */
     private $contentService;
 
     public function __construct(
@@ -56,9 +61,10 @@ class CommentsTab extends AbstractTab
      * @param array $parameters
      *
      * @return string
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
+     *
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
     public function renderView(array $parameters): string
     {
