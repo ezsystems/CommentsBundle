@@ -56,3 +56,11 @@ services:
     ez_comments.controller.comments_renderer:
         class: '%ez_comments.controller.comments_renderer.class%'
         arguments: ['@ez_comments.renderer', '@ezpublish.api.service.content']
+
+    # eZ Platform Admin UI integrations
+    ez_comments.comments.tab:
+        class: EzSystems\CommentsBundle\Tab\CommentsTab
+        parent: EzSystems\EzPlatformAdminUi\Tab\AbstractTab
+        arguments: [ '@twig', '@translator', '@ez_comments.renderer', '@ezpublish.api.service.content' ]
+        tags:
+            - { name: ezplatform.tab, group: 'location-view' }

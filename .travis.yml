@@ -9,9 +9,6 @@ cache:
 matrix:
   fast_finish: true
   include:
-    # Skipped as Composer runs out of memory consuming all RAM, can be re added if we drop deps like kernel 7.5 support here in event of opening new branch for v2
-    #- php: "5.6"
-    - php: "7.0"
     - php: "7.1"
     - php: "7.2"
     - name: '7.3 testing and Code Style Check'
